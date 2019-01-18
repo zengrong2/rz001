@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CompanyMapper">
+<resultMap type="Company" id="companyResultMap">
+		<id column="company_id" property="companyId"/>
+		<result column="company_name" property="companyName" />
+		<result column="company_juli" property="companyJuli" />
+		<result column="company_adress" property="companyAdress" />
+		<result column="company_welfare" property="companyWelfare" />
+		<result column="company_time" property="companyTime" />
+		<result column="company_scale" property="companyScale" />
+		<result column="company_nature" property="companyNature" />
+		<result column="company_phone" property="companyPhone"/>
+         <result column="created" property="created"/>
+         <result column="updated" property="updated"/>
+         <result column="labour_id" property="labour_id"/>
+         <result column="lng" property="lng"/>
+         <result column="lat" property="lat"/>
+         <result column="city" property="city"/>
+          <result column="area" property="area"/>
+         <result column="province" property="province"/>
+         <result column="is_recruit" property="is_recruit"/>
+	</resultMap>
+	<resultMap type="Company" id="companyZtreeResultMap">
+		<id column="company_id" property="companyId"/>
+		<result column="company_name" property="companyName" />
+		<result column="company_juli" property="companyJuli" />
+		<result column="company_adress" property="companyAdress" />
+		<result column="company_welfare" property="companyWelfare" />
+		<result column="company_time" property="companyTime" />
+		<result column="company_scale" property="companyScale" />
+		<result column="company_nature" property="companyNature" />
+		<result column="company_phone" property="companyPhone"/>
+         <result column="created" property="created"/>
+         <result column="updated" property="updated"/>
+         <result column="labour_id" property="labour_id"/>
+         <result column="lng" property="lng"/>
+         <result column="lat" property="lat"/>
+         <result column="city" property="city"/>
+          <result column="area" property="area"/>
+         <result column="province" property="province"/>
+         <result column="is_recruit" property="is_recruit"/>
+           <result column="remark" property="remark"/>
+         
+	</resultMap>
+	
+	<resultMap type="Company" id="company">
+		<id column="company_id" property="companyId"/>
+		<result column="company_name" property="companyName" />
+		<result column="company_juli" property="companyJuli" />
+		<result column="company_adress" property="companyAdress" />
+		<result column="company_welfare" property="companyWelfare" />
+		<result column="company_time" property="companyTime" />
+		<result column="company_scale" property="companyScale" />
+		<result column="company_nature" property="companyNature" />
+		<result column="company_phone" property="companyPhone"/>
+         <result column="created" property="created"/>
+         <result column="updated" property="updated"/>
+         <result column="labour_id" property="labour_id"/>
+         <result column="lng" property="lng"/>
+         <result column="lat" property="lat"/>
+         <result column="city" property="city"/>
+          <result column="area" property="area"/>
+         <result column="province" property="province"/>
+         <result column="is_recruit" property="is_recruit"/>
+          <result column="remark" property="remark"/>
+	</resultMap>
+	<!-- 字段 -->
+	<sql id="Field">
+		company_id,
+		company_name,
+		company_juli,
+		company_adress,
+		company_welfare,
+		company_time,
+	    company_scale,
+	    company_nature,
+	    company_phone,
+	    created,
+	    updated,
+	    labour_id,
+	    is_recruit,
+	    lng,
+	    lat,
+	    city,
+	    area,
+	    province,
+	    remark
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{companyId},
+		#{companyName},
+		#{companyJuli},
+		#{companyAdress},
+		#{companyWelfare},
+		#{companyTime},
+		#{companyScale},
+		#{companyNature},
+		#{companyPhone},
+		#{updated},
+		#{created}
+		#{labour_id},
+		#{is_recruit},
+		#{lng},
+	    #{lat},
+	    #{city},
+	    #{area},
+	    #{province},
+	    #{remark}
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_company
+	</sql>
+	
+	<select id="companylistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+		<if test="pd.is_recruit==null">
+		and is_recruit !=2
+		</if>
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			company_name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		<if test="pd.companyType!=null and pd.companyType !=''">
+		and company_nature = #{pd.companyType}
+		</if>
+		<if test="pd.labour_id!=null and pd.labour_id !=0">
+		and labour_id = #{pd.labour_id}
+		</if>
+		<if test="pd.is_recruit!=null ">
+		and is_recruit = #{pd.is_recruit}
+		</if>
+		</where> 
+	    order by updated  desc
+	</select>
+	
+	<select id="getAllCompany"  resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+	    order by updated  desc
+	</select>
+	
+	
+	
+	<delete id="deleteCompanyById" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			company_id = #{company_id}
+	</delete>
+	
+	<select id="findCompanyById" parameterType="int" resultType="pd">
+        select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where company_id=#{company_id}
+	
+	</select>
+	<!-- 通过公司名查找公司 -->
+	<select id="findCompanyByName" parameterType="String" resultType="pd">
+        select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where company_name=#{company_name}
+	
+	</select>
+	<select id="findCompanyByCid" parameterType="pd" resultType="pd">
+        select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where company_id=#{company_id}
+	
+	</select>
+<!--编辑 -->
+	<update id="editCompanyById" parameterType="pd">
+		update 
+		<include refid="tableName"></include> 
+		set 
+		    company_name      =#{companyName},
+		    company_juli       =#{companyJuli},
+			company_adress =#{companyAdress},
+			company_welfare    =#{companyWelfare},
+			company_time   =#{companyTime},
+			company_scale     =#{companyScale},
+			company_nature =#{companyNature},
+			company_phone = #{companyPhone},
+			labour_id = 	#{labour_id},
+			remark = #{remark}
+		where 
+			company_id=#{company_id}
+	</update>
+	
+	
+	<insert id="saveCompanyInfo" parameterType="pd">
+		insert into <include refid="tableName"></include> 
+		(company_name,company_adress,company_welfare,company_time,company_scale,company_nature,company_phone,created,updated,labour_id,province,city,area,lng,lat) values 
+		(#{company_name},#{company_adress},#{company_welfare},#{company_time},#{company_scale},#{company_nature},#{company_phone},#{created},#{updated},#{labour_id},#{province},#{city},#{area},#{lng},#{lat})
+	</insert>
+	<!-- 修改招聘状态 -->
+	<update id="editRecruitState" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set 
+				is_recruit           =#{is_recruit},
+			    updated        =#{update_time}
+			where 
+				company_id   = #{company_id}
+	</update>
+	
+	<!-- 批量删除deleteAllCompany -->
+	<delete id="deleteAllCompany" parameterType="String" >
+		delete from <include refid="tableName"></include>
+		where 
+			company_id in
+  			 <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                  #{item}
+             </foreach>
+            and 
+				company_id != '1'
+	</delete>
+</mapper>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdJournalismMapper">
+  <resultMap id="BaseResultMap" type="TdJournalism">
+    <id column="journalism_id" jdbcType="VARCHAR" property="journalismId" />
+    <result column="journalism_name" jdbcType="VARCHAR" property="journalismName" />
+    <result column="journalism_date" jdbcType="TIMESTAMP" property="journalismDate" />
+    <result column="journalism_sysoName" jdbcType="VARCHAR" property="journalismSysoname" />
+    <result column="journalism_browsingtimes" jdbcType="INTEGER" property="journalismBrowsingtimes" />
+    <result column="journalism_sharetimes" jdbcType="INTEGER" property="journalismSharetimes" />
+    <result column="journalism_url" jdbcType="VARCHAR" property="journalismUrl" />
+    <result column="readingsurvey_id" jdbcType="VARCHAR" property="readingsurveyId" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    journalism_id, journalism_name, journalism_date, journalism_syso_name, journalism_browsingtimes, is_online,
+    journalism_sharetimes, journalism_url, readingsurvey_id, created, updated,journalism_show_img,remark,share_summary
+  </sql>
+  <select id="selectByExample" parameterType="TdJournalismExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from td_journalism
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from td_journalism
+    where journalism_id = #{journalismId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from td_journalism
+    where journalism_id = #{journalismId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="TdJournalismExample">
+    delete from td_journalism
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TdJournalism">
+    insert into td_journalism (journalism_id, journalism_name, journalism_date, 
+      journalism_sysoName, journalism_browsingtimes, 
+      journalism_sharetimes, journalism_url, readingsurvey_id, 
+      created, updated)
+    values (#{journalismId,jdbcType=VARCHAR}, #{journalismName,jdbcType=VARCHAR}, #{journalismDate,jdbcType=TIMESTAMP}, 
+      #{journalismSysoname,jdbcType=VARCHAR}, #{journalismBrowsingtimes,jdbcType=INTEGER}, 
+      #{journalismSharetimes,jdbcType=INTEGER}, #{journalismUrl,jdbcType=VARCHAR}, #{readingsurveyId,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="TdJournalism">
+    insert into td_journalism
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="journalismId != null">
+        journalism_id,
+      </if>
+      <if test="journalismName != null">
+        journalism_name,
+      </if>
+      <if test="journalismDate != null">
+        journalism_date,
+      </if>
+      <if test="journalismSysoname != null">
+        journalism_sysoName,
+      </if>
+      <if test="journalismBrowsingtimes != null">
+        journalism_browsingtimes,
+      </if>
+      <if test="journalismSharetimes != null">
+        journalism_sharetimes,
+      </if>
+      <if test="journalismUrl != null">
+        journalism_url,
+      </if>
+      <if test="readingsurveyId != null">
+        readingsurvey_id,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="journalismId != null">
+        #{journalismId,jdbcType=VARCHAR},
+      </if>
+      <if test="journalismName != null">
+        #{journalismName,jdbcType=VARCHAR},
+      </if>
+      <if test="journalismDate != null">
+        #{journalismDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="journalismSysoname != null">
+        #{journalismSysoname,jdbcType=VARCHAR},
+      </if>
+      <if test="journalismBrowsingtimes != null">
+        #{journalismBrowsingtimes,jdbcType=INTEGER},
+      </if>
+      <if test="journalismSharetimes != null">
+        #{journalismSharetimes,jdbcType=INTEGER},
+      </if>
+      <if test="journalismUrl != null">
+        #{journalismUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="readingsurveyId != null">
+        #{readingsurveyId,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TdJournalismExample" resultType="java.lang.Long">
+    select count(*) from td_journalism
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update td_journalism
+    <set>
+      <if test="record.journalismId != null">
+        journalism_id = #{record.journalismId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.journalismName != null">
+        journalism_name = #{record.journalismName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.journalismDate != null">
+        journalism_date = #{record.journalismDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.journalismSysoname != null">
+        journalism_sysoName = #{record.journalismSysoname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.journalismBrowsingtimes != null">
+        journalism_browsingtimes = #{record.journalismBrowsingtimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.journalismSharetimes != null">
+        journalism_sharetimes = #{record.journalismSharetimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.journalismUrl != null">
+        journalism_url = #{record.journalismUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.readingsurveyId != null">
+        readingsurvey_id = #{record.readingsurveyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update td_journalism
+    set journalism_id = #{record.journalismId,jdbcType=VARCHAR},
+      journalism_name = #{record.journalismName,jdbcType=VARCHAR},
+      journalism_date = #{record.journalismDate,jdbcType=TIMESTAMP},
+      journalism_sysoName = #{record.journalismSysoname,jdbcType=VARCHAR},
+      journalism_browsingtimes = #{record.journalismBrowsingtimes,jdbcType=INTEGER},
+      journalism_sharetimes = #{record.journalismSharetimes,jdbcType=INTEGER},
+      journalism_url = #{record.journalismUrl,jdbcType=VARCHAR},
+      readingsurvey_id = #{record.readingsurveyId,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TdJournalism">
+    update td_journalism
+    <set>
+      <if test="journalismName != null">
+        journalism_name = #{journalismName,jdbcType=VARCHAR},
+      </if>
+      <if test="journalismDate != null">
+        journalism_date = #{journalismDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="journalismSysoname != null">
+        journalism_sysoName = #{journalismSysoname,jdbcType=VARCHAR},
+      </if>
+      <if test="journalismBrowsingtimes != null">
+        journalism_browsingtimes = #{journalismBrowsingtimes,jdbcType=INTEGER},
+      </if>
+      <if test="journalismSharetimes != null">
+        journalism_sharetimes = #{journalismSharetimes,jdbcType=INTEGER},
+      </if>
+      <if test="journalismUrl != null">
+        journalism_url = #{journalismUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="readingsurveyId != null">
+        readingsurvey_id = #{readingsurveyId,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where journalism_id = #{journalismId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TdJournalism">
+    update td_journalism
+    set journalism_name = #{journalismName,jdbcType=VARCHAR},
+      journalism_date = #{journalismDate,jdbcType=TIMESTAMP},
+      journalism_sysoName = #{journalismSysoname,jdbcType=VARCHAR},
+      journalism_browsingtimes = #{journalismBrowsingtimes,jdbcType=INTEGER},
+      journalism_sharetimes = #{journalismSharetimes,jdbcType=INTEGER},
+      journalism_url = #{journalismUrl,jdbcType=VARCHAR},
+      readingsurvey_id = #{readingsurveyId,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where journalism_id = #{journalismId,jdbcType=VARCHAR}
+  </update>
+   <select id="getAllTdJournalismlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Base_Column_List"></include>
+		
+		 from td_journalism
+	 <where>
+	
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			journalism_name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		
+	
+		</where>  
+	    order by updated  desc
+	</select>
+</mapper>

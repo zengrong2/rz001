@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SchoolMapper">
+
+	<!-- 字段 -->
+	<sql id="Field">
+		school_id,
+		name,
+		min_img,
+		saddress,
+		stype,
+		principal,
+		attribute,
+		type,
+		major_num,
+		score,
+		profile,
+		lng,
+		lat,
+		create_time,
+		update_time,
+		grade,
+		province,
+		city,
+		area,
+		enroll_cost,
+		probation_day,
+		user_id,
+		picture,
+		is_check,
+		phone,
+		school_phone,
+		follow_num,
+		collection,
+		introducte,
+		w_id,
+		employment_rate,
+		is_promotion,
+		is_distribution_work,
+		employment_salary,
+		average_training_cycle
+		
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{school_id},
+		#{name},
+		#{min_img},
+		#{saddress},
+		#{stype},
+		#{principal},
+		#{attribute},
+		#{type},
+		#{major_num},
+		#{score},
+		#{profile},
+		#{lng},
+		#{lat},
+		#{create_time},
+		#{update_time},
+		#{grade},
+		#{province},
+		#{city},
+		#{area},
+		#{enroll_cost},
+		#{probation_day},
+		#{user_id},
+		#{picture},
+		#{is_check},
+		#{phone},
+		#{school_phone},
+		#{follow_num},
+		#{collection},
+		#{introducte},
+		#{w_id},
+		#{employment_rate},
+		#{is_promotion},
+		#{is_distribution_work},
+		#{employment_salary},
+		#{average_training_cycle}
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_school
+	</sql>
+	<select id="schoollistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		<if test="pd.schoolType!=null and pd.schoolType !=''">
+		and type = #{pd.schoolType}
+		</if>
+		<if test="pd.w_id!=null and pd.w_id !=''">
+		and w_id = #{pd.w_id}
+		</if>
+		<if test="pd.is_check!=null and pd.is_check !=''">
+		and is_check = #{pd.is_check}
+		</if>
+		</where> 
+	    order by update_time  desc
+	</select>
+	<!-- 所有培训学校 -->
+	<select id="trainlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where 
+		  
+			w_id !=0
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		
+		<if test="pd.trainType!=null and pd.trainType !=''">
+		and type = #{pd.trainType}
+		</if>
+		<if test="pd.w_id!=null and pd.w_id !=''">
+		and w_id = #{pd.w_id}
+		</if>
+		<if test="pd.is_check!=null and pd.is_check !=''">
+		and is_check = #{pd.is_check}
+		</if>	
+	    order by update_time  desc
+	</select>
+	
+	<!-- 根据id查询 -->
+	<select id="findSchoolById" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where school_id=#{school_id}	
+	</select>
+	
+	<select id="findSchoolByName" parameterType="String" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where name=#{school_names}	
+	</select>
+	
+	
+	<!-- 学历提升所有学校 -->
+	<select id="promotionSchoollistPage" parameterType="page" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+		
+	where   is_promotion!=0
+	    <if test="pd.is_check!=null and pd.is_check !=''">
+		and is_check = #{pd.is_check}
+		</if>	
+		<if test="pd.schoolType!=null and pd.schoolType !=''">
+		and type = #{pd.schoolType}
+		</if>
+	    order by update_time  desc
+	</select>
+	
+	
+	<!-- 新增 -->
+	<insert id="saveS" parameterType="pd">
+		insert into <include refid="tableName"></include> (
+		name,stype,principal,grade,major_num,type,province,city,area,saddress,lng,lat,create_time,update_time,user_id,phone,school_phone,is_distribution_work,w_id,is_promotion,average_training_cycle,employment_rate,employment_salary
+		) values (
+		#{name},#{stype},#{principal},#{grade},#{major_num},#{type},#{province},#{city},#{area},#{saddress},#{lng},#{lat},#{create_time},#{update_time},#{user_id},#{phone},#{school_phone},#{is_distribution_work},#{w_id},#{is_promotion},#{average_training_cycle},#{employment_rate},#{employment_salary}
+		)
+	</insert>
+	
+	<!-- 删除学校 -->
+	<delete id="deleteS" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			school_id = #{school_id}
+	</delete>
+	
+	<!-- 根据管理员id找出学校 -->
+	<select id="findSchoolByUid" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where user_id=#{user_id}	
+	</select>
+	
+		<update id="editS" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set name          =#{name},
+			    stype         =#{stype},
+			    principal     =#{principal},
+			    grade         =#{grade},
+			    major_num     =#{major_num},
+			    type          =#{type},
+			    province      =#{province},
+			    city          =#{city},
+			    area          =#{area},
+			    saddress      =#{saddress},
+			    lng           =#{lng},
+			    lat           =#{lat},
+			    update_time   =#{update_time},
+			    min_img       =#{min_img},
+			    picture       =#{picture},
+			    enroll_cost   =#{enroll_cost},
+			    probation_day =#{probation_day},
+			    profile       =#{profile},
+			    phone         =#{phone},
+			    school_phone  =#{school_phone}
+			<if test="employment_rate!=null">
+	        ,employment_rate =#{employment_rate},			
+			</if> 
+			<if test="is_distribution_work!=null">
+	        is_distribution_work =#{is_distribution_work},			
+			</if> 
+			<if test="employment_salary!=null">
+	        employment_salary =#{employment_salary},			
+			</if> 
+			<if test="is_promotion!=null">
+	        is_promotion =#{is_promotion},			
+			</if> 
+			<if test="average_training_cycle!=null">
+	        average_training_cycle =#{average_training_cycle}			
+			</if>    
+		
+			where 
+				school_id = #{school_id}
+	</update>
+	
+		<update id="editState" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set 
+				is_check           =#{is_check},
+			    update_time        =#{update_time}
+			where 
+				school_id   = #{school_id}
+	</update>
+</mapper>

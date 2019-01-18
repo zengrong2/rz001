@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WorkMapper">
+<resultMap type="Position" id="positionResultMap">
+		<id column="p_id" property="pId"/>
+		<result column="p_name" property="pName" />
+		<result column="p_salary" property="pSalary" />
+		<result column="p_address" property="pAddress" />
+		<result column="p_juli" property="pJuli" />
+		<result column="p_content" property="pContent" />
+		<result column="p_requirement" property="pRequirement" />
+		<result column="company_id" property="companyId" />
+		<result column="created" property="created"/>
+         <result column="updated" property="updated"/>
+         <result column="p_type" property="p_type"/>
+         <result column="work_collection" property="work_collection"/>
+         <result column="work_browse" property="work_browse"/>
+         <result column="is_state" property="is_state"/>
+          <result column="work" property="work"/>
+         
+	</resultMap>
+	<resultMap type="Position" id="positionZtreeResultMap">
+		<id column="p_id" property="pId"/>
+		<result column="p_name" property="pName" />
+		<result column="p_salary" property="pSalary" />
+		<result column="p_address" property="pAddress" />
+		<result column="p_juli" property="pJuli" />
+		<result column="p_content" property="pContent" />
+		<result column="p_requirement" property="pRequirement" />
+		<result column="company_id" property="companyId" />
+		<result column="created" property="created"/>
+         <result column="updated" property="updated"/>
+         <result column="p_type" property="p_type"/>
+         <result column="work_collection" property="work_collection"/>
+         <result column="work_browse" property="work_browse"/>
+         <result column="is_state" property="is_state"/>
+          <result column="remark" property="remark"/>
+           <result column="work" property="work"/>
+       
+	</resultMap>
+	
+	
+	<resultMap type="Position" id="position">
+		<id column="p_id" property="pId"/>
+		<result column="p_name" property="pName" />
+		<result column="p_salary" property="pSalary" />
+		<result column="p_address" property="pAddress" />
+		<result column="p_juli" property="pJuli" />
+		<result column="p_content" property="pContent" />
+		<result column="p_requirement" property="pRequirement" />
+		<result column="company_id" property="companyId" />
+		<result column="created" property="created"/>
+         <result column="updated" property="updated"/>
+         <result column="p_type" property="p_type"/>
+         <result column="work_collection" property="work_collection"/>
+         <result column="work_browse" property="work_browse"/>
+        <result column="is_state" property="is_state"/>
+               <result column="remark" property="remark"/>
+       
+	</resultMap>
+	<!-- 字段 -->
+	<sql id="Field">
+		p_id,
+		p_name,
+		p_salary,
+		p_address,
+		p_juli,
+		p_content,
+		p_requirement,
+		company_id,
+	    updated,
+	    created,
+	    p_type,
+	    is_state,
+	    remark,
+	    work
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{pId},
+		#{pName},
+		#{pSalary},
+		#{companyId},
+		#{pAddress},
+		#{pJuli},
+		#{pContent},
+		#{pRequirement},
+		#{updated},
+		#{created},
+		#{is_state},
+		#{remark},
+		#{work}
+		
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_position
+	</sql>
+	
+	<select id="findListWorkslistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+		<if test=" pd.is_state!=1">
+		and is_state !=1
+		</if>
+		<if test=" pd.is_state==1">
+		and is_state =1
+		</if>
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			p_name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		<if test="pd.labour_id!=null and pd.labour_id !=''">
+		and p_type = #{pd.labour_id}
+		</if>
+		</where> 
+	    order by updated  desc
+	</select>
+	
+	<select id="getFindListWork" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where 
+		<if test="company_id!=null">
+		 company_id = #{company_id}
+		</if>
+	    order by updated  desc
+	</select>
+	<!-- 根据id查询findPositionByPid -->
+	<select id="findPositionByPid" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where p_id=#{p_id}	
+	</select>
+	
+		<!-- 根据公司id查询所有职位 -->
+	<select id="findPositionByCompanyId" parameterType="int" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where company_id=#{companyId}	
+	</select>
+	<select id="findPositionById" parameterType="int" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where p_id=#{p_id}	
+	</select>
+<!-- 删除工作 -->
+	<delete id="deletePositionByPid" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			p_id = #{p_id}
+	</delete>
+	<!-- 修改工作 -->
+	
+	<update id="editPositionByPid" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set p_name          =#{p_name},
+			    p_salary         =#{p_salary},
+			 
+			    p_content         =#{p_content},
+			  
+			  
+			    p_requirement      =#{p_requirement},
+			    company_id          =#{company_id},
+			  work = #{work},
+			    updated      =#{update_time},
+			   
+			    remark =#{remark}
+			    
+			where 
+				p_id = #{p_id}
+	</update>
+	
+	<update id="updateWorkState" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			<set>
+			<choose>
+        <when test="is_state= 2">
+             is_state = 1
+        </when>
+        <otherwise>
+             is_state = 0
+        </otherwise>
+			</choose>
+		    </set>					    
+			where 
+				p_id = #{p_id}
+	</update>
+	
+	<!-- 修改招聘状态 -->
+	<update id="editPositionState" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set 
+				is_state           =#{is_state},
+			    updated        =#{updated}
+			where 
+				p_id   = #{p_id}
+	</update>
+	
+	<!-- 新增 -->
+	<insert id="savePositionInfo" parameterType="pd">
+		insert into <include refid="tableName"></include> (
+		p_name,p_salary,p_address,p_content,p_requirement,company_id,p_type,p_juli,created,updated,is_state,work
+		) values (
+		#{p_name},#{p_salary},#{p_address},#{p_content},#{p_requirement},#{company_id},#{p_type},#{p_juli},#{create_time},#{update_time},#{is_state},#{work}
+		)
+	</insert>
+	
+	<!-- 批量删除deleteAllPosition -->
+	<delete id="deleteAllPosition" parameterType="String" >
+		delete from <include refid="tableName"></include>
+		where 
+			p_id in
+  			 <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                  #{item}
+             </foreach>
+            and 
+				p_id != '1'
+	</delete>
+</mapper>

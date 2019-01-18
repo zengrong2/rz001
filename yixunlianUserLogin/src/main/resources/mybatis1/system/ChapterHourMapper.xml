@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChapterHourMapper">
+
+	<!-- 字段 -->
+	<sql id="Field">
+		ch_id,
+		chapter_id,
+		ch_name,
+		created,
+		updated
+		
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{chId},
+		#{chapterId},
+		#{chName},
+		#{created},
+		#{updated}
+		
+		
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_class_hour
+	</sql>
+	
+	<!-- 根据id查询 -->
+	<select id="findListChapterByCurriculumId" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where curriculum_id=#{curriculum_id}	
+	 order by created desc
+	</select>
+</mapper>

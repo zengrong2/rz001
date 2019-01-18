@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdFeedbackadviceMapper">
+  <resultMap id="BaseResultMap" type="TdFeedbackadvice">
+    <result column="feedbackadvice_id" jdbcType="VARCHAR" property="feedbackadviceId" />
+    <result column="feedbackadvice_imgurl" jdbcType="VARCHAR" property="feedbackadviceImgurl" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="advice_phone" jdbcType="VARCHAR" property="advicePhone" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+     <result column="remark" jdbcType="TIMESTAMP" property="remark" />
+     <result column="is_adopt" jdbcType="TIMESTAMP" property="isAdopt" />
+      <result column="is_already_consulted" jdbcType="TIMESTAMP" property="isAlreadyConsulted" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="TdFeedbackadvice">
+    <result column="feedbackadvice_context" jdbcType="LONGVARCHAR" property="feedbackadviceContext" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    feedbackadvice_id,feedbackadvice_context, feedbackadvice_imgurl, user_id, advice_phone, created, updated,remark,is_adopt,is_already_consulted
+ 
+  </sql>
+  <sql id="Blob_Column_List">
+    feedbackadvice_context
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="TdFeedbackadviceExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from td_feedbackadvice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="TdFeedbackadviceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from td_feedbackadvice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="TdFeedbackadviceExample">
+    delete from td_feedbackadvice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TdFeedbackadvice">
+    insert into td_feedbackadvice (feedbackadvice_id, feedbackadvice_imgurl, 
+      user_id, advice_phone, created, 
+      updated, feedbackadvice_context)
+    values (#{feedbackadviceId,jdbcType=VARCHAR}, #{feedbackadviceImgurl,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{advicePhone,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP}, #{feedbackadviceContext,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="TdFeedbackadvice">
+    insert into td_feedbackadvice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="feedbackadviceId != null">
+        feedbackadvice_id,
+      </if>
+      <if test="feedbackadviceImgurl != null">
+        feedbackadvice_imgurl,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="advicePhone != null">
+        advice_phone,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="feedbackadviceContext != null">
+        feedbackadvice_context,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="feedbackadviceId != null">
+        #{feedbackadviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackadviceImgurl != null">
+        #{feedbackadviceImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="advicePhone != null">
+        #{advicePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedbackadviceContext != null">
+        #{feedbackadviceContext,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TdFeedbackadviceExample" resultType="java.lang.Long">
+    select count(*) from td_feedbackadvice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update td_feedbackadvice
+    <set>
+      <if test="record.feedbackadviceId != null">
+        feedbackadvice_id = #{record.feedbackadviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feedbackadviceImgurl != null">
+        feedbackadvice_imgurl = #{record.feedbackadviceImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.advicePhone != null">
+        advice_phone = #{record.advicePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.feedbackadviceContext != null">
+        feedbackadvice_context = #{record.feedbackadviceContext,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update td_feedbackadvice
+    set feedbackadvice_id = #{record.feedbackadviceId,jdbcType=VARCHAR},
+      feedbackadvice_imgurl = #{record.feedbackadviceImgurl,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      advice_phone = #{record.advicePhone,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP},
+      feedbackadvice_context = #{record.feedbackadviceContext,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update td_feedbackadvice
+    set feedbackadvice_id = #{record.feedbackadviceId,jdbcType=VARCHAR},
+      feedbackadvice_imgurl = #{record.feedbackadviceImgurl,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      advice_phone = #{record.advicePhone,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+   <select id="getAllTdFeedbackadvicelistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Base_Column_List"></include>
+		
+		 from td_feedbackadvice
+	 
+	    order by updated  desc
+	</select>
+</mapper>

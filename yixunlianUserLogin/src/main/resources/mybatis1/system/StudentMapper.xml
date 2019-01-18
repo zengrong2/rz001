@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StudentMapper">
+
+	<!-- 字段 -->
+	<sql id="Field">
+		user_id,
+		phone,
+		password,
+		name,
+		card,
+		jhr_phone,
+		jhr_name,
+		head_portrait,
+		student_card,
+		school_name,
+		qualifications,
+		sex,
+		inviter_id,
+		created,
+		updated,
+		hobby,
+		mojar,
+		state,
+		school_id,
+		money,
+		create_time,
+		tphone
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{user_id},
+		#{phone},
+		#{password},
+		#{name},
+		#{card},
+		#{jhr_phone},
+		#{jhr_name},
+		#{head_portrait},
+		#{student_card},
+		#{school_name},
+		#{qualifications},
+		#{sex},
+		#{inviter_id},
+		#{created},
+		#{updated},
+		#{hobby},
+		#{mojar},
+		#{state},
+		#{school_id},
+		#{money},
+		#{create_time},
+		#{tphone}
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_student
+	</sql>
+	<select id="studentlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+	    order by created  desc
+	</select>
+	
+	<!-- 根据id查询 -->
+	<select id="findStudentById" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where user_id=#{user_id}	
+	</select>
+
+	<!-- 招生老师id查询 -->
+	<select id="listStudentByInviter" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where inviter_id=#{tid}	
+	</select>
+	<!-- 2018/8/8 -->
+	<select id="findFirstTeaGetStu" parameterType="pd" resultType="pd">
+	 select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where inviter_id=#{tids}
+	
+	</select>
+	<!-- 学校id查询 -->
+	<select id="schoolStudentlistPage" parameterType="page" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 <where>
+	  <if test="pd.school_id!= null and pd.school_id != ''"><!-- 关键词检索 -->
+			 school_id=#{pd.school_id}	
+	  </if>
+	  <if test="pd.state != null and pd.state != ''"><!-- 状态检索 -->
+		 and state=#{pd.state} 
+	  </if>
+	  <if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			(phone LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+			or
+		    name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		    )
+	   </if>
+	   <if test="pd.start != null and pd.start != ''"><!-- 状态检索 -->
+		 and created &gt;= #{pd.start}
+	  </if>
+	  <if test="pd.end != null and pd.end != ''"><!-- 状态检索 -->
+		 and created &lt;= #{pd.end}
+	  </if>
+	  <if test="pd.tphone !=null and pd.tphone !=''">
+	    and tphone =#{pd.tphone}
+	  </if>
+	  </where>
+	  order by created desc
+	</select>
+	<!-- 2018/8/4 -->
+	<!-- 一级老师自己招聘的学生 -->
+	<select id="listAllStudentByTid" parameterType="Long" resultType="Student">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where
+		  inviter_id=#{tid} 
+	  order by created desc
+	</select>
+	
+	<!-- 查询所有的学生 -->
+	<select id="listAllStudents" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 <where>
+	  <if test="state != null and state != ''"><!-- 状态检索 -->
+		 and state=#{state} 
+	  </if>
+	  <if test="keywords!= null and keywords != ''"><!-- 关键词检索 -->
+			and
+			(phone LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+			or
+		    name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+		    )
+	   </if>
+	   <if test="start != null and start != ''"><!-- 开始时间检索 -->
+		 and created &gt;= #{start}
+	  </if>
+	  <if test="end != null and end != ''"><!-- 结束检索 -->
+		 and created &lt;= #{end}
+	  </if>
+	   <if test="tphone !=null and tphone !=''">
+	    and tphone =#{tphone}
+	  </if>
+	  </where>
+	  order by created desc
+	</select>
+	<!-- 更新邀请人id -->
+	<update id="editTid" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set 
+			inviter_id =#{tid},
+			tphone     =#{phone}
+			where 
+			user_id = #{user_id}
+	</update>
+	
+	<update id="editS" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set 
+				state     =#{state},
+			    updated    =#{updated},
+                school_id =0
+			where 
+				user_id   = #{user_id}
+	</update>
+	<!-- 2018/8/4 -->
+	<update id="comfireStudent" parameterType="pd">
+	update  <include refid="tableName"></include>
+			set 
+			<if test="state==3">
+				state     =${0}		</if>  
+				<if test="state!=3">
+				state     =${3}		</if>  
+			where 
+				user_id   = #{user_id}
+	</update>
+		<delete id="deleteStuden" parameterType="pd">
+		delete from 
+		<include refid="tableName"></include> 
+		where user_id=#{user_id} 
+	</delete>
+</mapper>

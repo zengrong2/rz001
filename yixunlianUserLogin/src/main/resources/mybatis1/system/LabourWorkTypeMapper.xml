@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LabourWorkTypeMapper">
+
+	<!-- 字段 -->
+	<sql id="Field">
+		labour_id,
+		labour_name,
+		labour_image,
+	    updated,
+	    created,
+	    remark
+	 
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{labour_id},
+		#{labour_name},
+		#{labour_image},
+		#{updated},
+		#{created},
+		#{remark}
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_labour
+	</sql>
+	
+	<select id="labourWordTypelistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			labour_name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		</where>
+		
+	    order by updated  desc
+	</select>
+	
+	<!-- 查询就业所有类型 -->
+	<select id="showListLabourWorkType"  resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		
+	    order by updated  desc
+	</select>
+	<!-- 删除就业类型 -->
+	<delete id="deleteLabourTypeBylid" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			labour_id = #{labour_id}
+	</delete>
+	
+	<select id="getLabourTypeById" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where labour_id=#{labour_id}	
+	</select>
+	<!-- 通过id查找findLabourTypeById -->
+	<select id="findLabourTypeById" parameterType="int" resultType="Labour">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where labour_id=#{labour_id}	
+	</select>
+<update id="editLabourType" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set labour_name          =#{labour_name},
+			    labour_image         =#{labour_image},
+			   
+			    updated         =#{update_time},
+			    remark =  #{remark}
+			    
+			where 
+				labour_id = #{labour_id}
+	</update>
+	
+	<!-- 新增 -->
+	<insert id="saveLabourTypeInfo" parameterType="pd">
+		insert into <include refid="tableName"></include> (
+		labour_name,labour_image,created,updated
+		) values (
+		#{labour_name},#{labour_image},#{created},#{updated}
+		)
+	</insert>
+	
+	<!-- 批量删除deleteAllLabourWorkType -->
+	<delete id="deleteAllLabourWorkType" parameterType="String" >
+		delete from <include refid="tableName"></include>
+		where 
+			labour_id in
+  			 <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                  #{item}
+             </foreach>
+            and 
+				labour_id != '1'
+	</delete>
+</mapper>

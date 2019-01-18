@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MajorTypeMapper">
+  <resultMap type="MajorType" id="majorTypeResultMap">
+		<id column="type_id" property="type_id"/>
+		<result column="type_name" property="type_name" />
+		<result column="pid" property="pid" />
+		<result column="img_url" property="img_url" />
+		<result column="create_time" property="create_time" />
+		<result column="update_time" property="update_time" />
+        <result column="type" property="type" />
+	</resultMap>
+	
+	<!-- ztree -->
+	<resultMap type="MajorType" id="majorTypeZtreeResultMap">
+	   <id column="type_id" property="type_id"/>
+		<result column="type_name" property="type_name" />
+		<result column="pid" property="pid" />
+		<result column="img_url" property="img_url" />
+		<result column="create_time" property="create_time" />
+		<result column="update_time" property="update_time" />
+	     <result column="target" property="target"></result>
+	     <result column="URL" property="URL"/>
+        <result column="type" property="type" />
+	</resultMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_type
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		type_id,
+ 	    type_name,
+ 		pid,
+ 		img_url,
+ 	    create_time,
+ 	    update_time,
+        type
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{type_id},
+ 	    #{type_name},
+ 		#{pid},
+ 		#{img_url},
+ 	    #{create_time},
+ 	    #{update_time},
+ 	    #{type}
+	</sql>
+	
+	<!--通过ID获取其子一级菜单 -->
+	<select id="listSubMajorTypeBypId" parameterType="Long" resultMap="majorTypeResultMap">
+		select  
+			<include refid="Field"></include>
+		from 
+			<include refid="tableName"></include>
+		where pid = #{pid} 
+	</select>
+	
+	<!--通过菜单ID获取数据 -->
+	<select id="getMajorTypeById" parameterType="pd" resultType="pd">
+		select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where type_id=#{type_id}
+	</select>
+	
+	<!--新增 -->
+	<insert id="insertMajorType" parameterType="MajorType">
+		insert into 
+			tb_type 
+		(pid,type_name,img_url,update_time,type) values 
+		(#{pid},#{type_name},#{img_url},#{update_time},#{type})
+	</insert>
+	
+	<!--取最大ID-->
+	<select id="findMaxId" parameterType="pd" resultType="pd">
+		select MAX(type_id) tid from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!--删除菜单-->
+	<delete id="deleteMajorTypeById" parameterType="Long">
+		delete from 
+		<include refid="tableName"></include> 
+		where type_id=#{type_id} 
+	</delete>
+	
+	<!--编辑 -->
+	<update id="updateMajorType" parameterType="MajorType">
+		update 
+		<include refid="tableName"></include> 
+		set 
+			type_name =#{type_name},
+			img_url  =#{img_url},
+			update_time =#{update_time}
+			
+		where 
+			type_id=#{type_id}
+	</update>
+</mapper>

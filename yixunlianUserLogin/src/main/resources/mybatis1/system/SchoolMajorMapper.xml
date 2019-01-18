@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SchoolMajorMapper">
+	<!-- 字段 -->
+	<sql id="Field">
+		major_id,
+		school_id,
+		major_name,
+		subject_type,
+		two_type,
+		type_id,
+		school_name,
+		money,
+		year,
+		create_time,
+		update_time,
+		remark,
+		zsdx
+	</sql>
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{major_id},
+		#{school_id},
+		#{major_name},
+		#{subject_type},
+		#{two_type},
+		#{type_id},
+		#{school_name},
+		#{money},
+		#{year},
+		#{create_time},
+		#{update_time},
+		#{remark},
+		#{zsdx}
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_school_major
+	</sql>
+	<sql id="sTableName">
+		tb_school
+	</sql>
+	
+	<select id="schoolMajorlistPage" parameterType="page" resultType="pd">
+		select
+			m.major_id,
+			s.school_id,
+			m.major_name,
+			m.subject_type,
+			m.two_type,
+			m.type_id,
+			s.name,
+			m.money,
+			m.year,
+			m.create_time,
+			m.update_time,
+			m.remark,
+			m.zsdx
+		from
+		<include refid="tableName"></include> m,<include refid="sTableName"></include>s 
+		where m.school_id=s.school_id and m.school_id=#{pd.school_id}
+	    order by create_time  desc
+	</select>
+	
+	<!-- 根据id查询 -->
+	<select id="findSchoolMajorById" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 <where>
+	 <if test="major_id!=null">
+	 and major_id=#{major_id}	
+	 </if>
+	  <if test="school_id!=null">
+	 and school_id=#{school_id}	
+	 </if>
+	 </where> 
+	</select>
+	
+	<!--2018/8/4    根据专业id，获取费用 -->
+	<select id="studentStyMajorMoney" parameterType="pd" resultType="SchoolMajor">
+	select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+		where
+		major_name=#{mojars}
+		 and school_id=#{school_ids}
+	   
+	</select>
+	
+	<select id="findSchooMajorByName" parameterType="pd" resultType="pd">
+	select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+		
+		where 
+		 major_name = #{major_name}
+		 and 	
+		 school_id = #{school_id}
+	</select>
+	
+	<select id="getlistAllSchoolMajor" parameterType="pd" resultType="pd">
+	select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+		where
+		
+		 school_id = #{school_id}	   
+	</select>
+	<!-- 新增 -->
+	<insert id="saveSm" parameterType="pd">
+		insert into <include refid="tableName"></include> 
+		(school_id,major_name,subject_type,two_type,type_id,school_name,money,year,create_time,update_time,remark,zsdx) values 
+		(#{school_id},#{major_name},#{subject_type},#{two_type},#{type_id},#{school_name},#{money},#{year},#{create_time},#{update_time},#{remark},#{zsdx})
+	</insert>
+	
+	<!-- 删除 -->
+	<delete id="deleteSm" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			major_id = #{major_id}
+	</delete>
+	
+	<!-- 更新 -->
+		<update id="editSm" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set major_name   =#{major_name},
+				subject_type =#{subject_type},
+				two_type     =#{two_type},
+				type_id      =#{type_id},
+				money        =#{money},
+				year         =#{year},
+			    update_time   =#{update_time},
+			    remark        =#{remark},
+			    zsdx         =#{zsdx}
+			where 
+				major_id = #{major_id}
+	</update>
+	
+	<!-- 通过学校id查询 -->
+	<select id="schoolMajorBySId" parameterType="pd" resultType="pd">
+		select
+			m.major_id,
+			s.school_id,
+			m.major_name,
+			m.subject_type,
+			m.two_type,
+			m.type_id,
+			s.name,
+			m.money,
+			m.year,
+			m.create_time,
+			m.update_time,
+			m.remark,
+			m.zsdx
+		from
+		<include refid="tableName"></include> m,<include refid="sTableName"></include> s
+		
+		where m.school_id=s.school_id and m.school_id=#{school_id}
+		<if test="keywords!= null and keywords != ''"><!-- 关键词检索 -->
+			and
+			(m.major_name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+			or
+		    m.subject_type LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+		    or
+		    m.two_type LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+		    )
+	  </if>
+		
+	    order by create_time  desc
+	</select>
+	
+</mapper>

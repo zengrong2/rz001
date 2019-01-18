@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdUtypeMapper">
+  <resultMap id="BaseResultMap" type="TdUtype">
+    <id column="utype_id" jdbcType="VARCHAR" property="utypeId" />
+    <result column="user_type" jdbcType="VARCHAR" property="userType" />
+    <result column="user_day" jdbcType="VARCHAR" property="userDay" />
+    <result column="utype_charge" jdbcType="INTEGER" property="utypeCharge" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    utype_id, user_type, user_day, utype_charge, created, updated
+  </sql>
+  <select id="selectByExample" parameterType="TdUtypeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from td_utype
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from td_utype
+    where utype_id = #{utypeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from td_utype
+    where utype_id = #{utypeId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="TdUtypeExample">
+    delete from td_utype
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TdUtype">
+    insert into td_utype (utype_id, user_type, user_day, 
+      utype_charge, created, updated
+      )
+    values (#{utypeId,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, #{userDay,jdbcType=VARCHAR}, 
+      #{utypeCharge,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="TdUtype">
+    insert into td_utype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="utypeId != null">
+        utype_id,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="userDay != null">
+        user_day,
+      </if>
+      <if test="utypeCharge != null">
+        utype_charge,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="utypeId != null">
+        #{utypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="userDay != null">
+        #{userDay,jdbcType=VARCHAR},
+      </if>
+      <if test="utypeCharge != null">
+        #{utypeCharge,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TdUtypeExample" resultType="java.lang.Long">
+    select count(*) from td_utype
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update td_utype
+    <set>
+      <if test="record.utypeId != null">
+        utype_id = #{record.utypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userType != null">
+        user_type = #{record.userType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userDay != null">
+        user_day = #{record.userDay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.utypeCharge != null">
+        utype_charge = #{record.utypeCharge,jdbcType=INTEGER},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update td_utype
+    set utype_id = #{record.utypeId,jdbcType=VARCHAR},
+      user_type = #{record.userType,jdbcType=VARCHAR},
+      user_day = #{record.userDay,jdbcType=VARCHAR},
+      utype_charge = #{record.utypeCharge,jdbcType=INTEGER},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TdUtype">
+    update td_utype
+    <set>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="userDay != null">
+        user_day = #{userDay,jdbcType=VARCHAR},
+      </if>
+      <if test="utypeCharge != null">
+        utype_charge = #{utypeCharge,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where utype_id = #{utypeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TdUtype">
+    update td_utype
+    set user_type = #{userType,jdbcType=VARCHAR},
+      user_day = #{userDay,jdbcType=VARCHAR},
+      utype_charge = #{utypeCharge,jdbcType=INTEGER},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where utype_id = #{utypeId,jdbcType=VARCHAR}
+  </update>
+  <select id="getAllTdUTypelistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Base_Column_List"></include>
+		
+		 from td_utype
+	 <where>
+	
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			activity_name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		
+		</where>  
+	    order by created  desc
+	</select>
+</mapper>

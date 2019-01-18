@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdUserMapper">
+  <resultMap id="BaseResultMap" type="TdUser">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="u_nickname" jdbcType="VARCHAR" property="uNickname" />
+    <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+    <result column="u_sex" jdbcType="INTEGER" property="uSex" />
+    <result column="ubirthday" jdbcType="DATE" property="ubirthday" />
+    <result column="u_name" jdbcType="VARCHAR" property="uName" />
+    <result column="u_card" jdbcType="VARCHAR" property="uCard" />
+  
+    <result column="u_phone" jdbcType="VARCHAR" property="uPhone" />
+    <result column="u_balance" jdbcType="DOUBLE" property="uBalance" />
+    <result column="is_pay" jdbcType="INTEGER" property="isPay" />
+    <result column="is_vip" jdbcType="INTEGER" property="isVip" />
+    <result column="is_authentication" jdbcType="INTEGER" property="isAuthentication" />
+  
+    <result column="utype_id" jdbcType="VARCHAR" property="utypeId" />
+    <result column="egid_id" jdbcType="VARCHAR" property="egidId" />
+    <result column="citycode" jdbcType="VARCHAR" property="citycode" />
+    <result column="memberid" jdbcType="VARCHAR" property="memberid" />
+    <result column="creditrd_num" jdbcType="INTEGER" property="creditrdNum" />
+    <result column="userReferee_uid" jdbcType="VARCHAR" property="userrefereeUid" />
+    <result column="userManager_uid" jdbcType="VARCHAR" property="usermanagerUid" />
+    <result column="introduction_idfront" jdbcType="VARCHAR" property="introductionIdfront" />
+    <result column="introduction_idback" jdbcType="VARCHAR" property="introductionIdback" />
+    <result column="introduction_license" jdbcType="VARCHAR" property="introductionLicense" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="pubactivities_ispay" jdbcType="INTEGER" property="pubactivitiesIspay" />
+    <result column="user_isactivation" jdbcType="INTEGER" property="userIsactivation" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="member_days" jdbcType="INTEGER" property="memberDays" />
+    <result column="resource_strategy_isexperience" jdbcType="INTEGER" property="resourceStrategyIsexperience" />
+    <result column="closed_user_status" jdbcType="VARCHAR" property="closedUserStatus" />
+   <!--  <result column="experience_time" jdbcType="DATE" property="experienceTime" />
+    <result column="experienceutype_id" jdbcType="VARCHAR" property="experienceutypeId" /> -->
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    user_id, open_id, u_nickname, head_url, u_sex, ubirthday, u_name, u_card, u_phone, 
+    u_balance, is_pay, is_vip, is_authentication,utype_id, egid_id, 
+    city_citycode,area_citycode,province_citycode,address_name, memberid, creditrd_num, userReferee_uid, userManager_uid, introduction_idfront, 
+    introduction_idback, introduction_license, user_type, pubactivities_ispay, user_isactivation, 
+    created, updated, member_days, resource_strategy_isexperience,closed_user_status
+    <!-- , experience_time, experienceutype_id -->
+  </sql>
+  <!-- select id="selectByExample" parameterType="TdUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from td_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from td_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from td_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="TdUserExample">
+    delete from td_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TdUser">
+    insert into td_user (user_id, open_id, u_nickname, 
+      head_url, u_sex, ubirthday, 
+      u_name, u_card, u_phone, 
+      u_balance, is_pay, is_vip, 
+      is_authentication, ty_id, umoney_id, 
+      utype_id, egid_id, citycode, 
+      memberid, creditrd_num, userReferee_uid, 
+      userManager_uid, introduction_idfront, introduction_idback, 
+      introduction_license, user_type, pubactivities_ispay, 
+      user_isactivation, created, updated, closedUser_status,
+      member_days, resource_strategy_isexperience, 
+      experience_time, experienceutype_id)
+    values (#{userId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{uNickname,jdbcType=VARCHAR}, 
+      #{headUrl,jdbcType=VARCHAR}, #{uSex,jdbcType=INTEGER}, #{ubirthday,jdbcType=DATE}, 
+      #{uName,jdbcType=VARCHAR}, #{uCard,jdbcType=VARCHAR}, #{uPhone,jdbcType=VARCHAR}, 
+      #{uBalance,jdbcType=DOUBLE}, #{isPay,jdbcType=INTEGER}, #{isVip,jdbcType=INTEGER}, 
+      #{isAuthentication,jdbcType=INTEGER}, #{tyId,jdbcType=VARCHAR}, #{umoneyId,jdbcType=VARCHAR}, 
+      #{utypeId,jdbcType=VARCHAR}, #{egidId,jdbcType=VARCHAR}, #{citycode,jdbcType=VARCHAR}, 
+      #{memberid,jdbcType=VARCHAR}, #{creditrdNum,jdbcType=INTEGER}, #{userrefereeUid,jdbcType=VARCHAR}, 
+      #{usermanagerUid,jdbcType=VARCHAR}, #{introductionIdfront,jdbcType=VARCHAR}, #{introductionIdback,jdbcType=VARCHAR}, 
+      #{introductionLicense,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{pubactivitiesIspay,jdbcType=INTEGER}, 
+      #{userIsactivation,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, #{closedUser_status,jdbcType=TIMESTAMP}, 
+      #{memberDays,jdbcType=INTEGER}, #{resourceStrategyIsexperience,jdbcType=INTEGER}, 
+      #{experienceTime,jdbcType=DATE}, #{experienceutypeId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="TdUser">
+    insert into td_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="uNickname != null">
+        u_nickname,
+      </if>
+      <if test="headUrl != null">
+        head_url,
+      </if>
+      <if test="uSex != null">
+        u_sex,
+      </if>
+      <if test="ubirthday != null">
+        ubirthday,
+      </if>
+      <if test="uName != null">
+        u_name,
+      </if>
+      <if test="uCard != null">
+        u_card,
+      </if>
+      <if test="uPhone != null">
+        u_phone,
+      </if>
+      <if test="uBalance != null">
+        u_balance,
+      </if>
+      <if test="isPay != null">
+        is_pay,
+      </if>
+      <if test="isVip != null">
+        is_vip,
+      </if>
+      <if test="isAuthentication != null">
+        is_authentication,
+      </if>
+      <if test="tyId != null">
+        ty_id,
+      </if>
+      <if test="umoneyId != null">
+        umoney_id,
+      </if>
+      <if test="utypeId != null">
+        utype_id,
+      </if>
+      <if test="egidId != null">
+        egid_id,
+      </if>
+      <if test="citycode != null">
+        citycode,
+      </if>
+      <if test="memberid != null">
+        memberid,
+      </if>
+      <if test="creditrdNum != null">
+        creditrd_num,
+      </if>
+      <if test="userrefereeUid != null">
+        userReferee_uid,
+      </if>
+      <if test="usermanagerUid != null">
+        userManager_uid,
+      </if>
+      <if test="introductionIdfront != null">
+        introduction_idfront,
+      </if>
+      <if test="introductionIdback != null">
+        introduction_idback,
+      </if>
+      <if test="introductionLicense != null">
+        introduction_license,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="pubactivitiesIspay != null">
+        pubactivities_ispay,
+      </if>
+      <if test="userIsactivation != null">
+        user_isactivation,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="memberDays != null">
+        member_days,
+      </if>
+      <if test="resourceStrategyIsexperience != null">
+        resource_strategy_isexperience,
+      </if>
+      <if test="experienceTime != null">
+        experience_time,
+      </if>
+      <if test="experienceutypeId != null">
+        experienceutype_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="uNickname != null">
+        #{uNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="headUrl != null">
+        #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="uSex != null">
+        #{uSex,jdbcType=INTEGER},
+      </if>
+      <if test="ubirthday != null">
+        #{ubirthday,jdbcType=DATE},
+      </if>
+      <if test="uName != null">
+        #{uName,jdbcType=VARCHAR},
+      </if>
+      <if test="uCard != null">
+        #{uCard,jdbcType=VARCHAR},
+      </if>
+      <if test="uPhone != null">
+        #{uPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="uBalance != null">
+        #{uBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="isPay != null">
+        #{isPay,jdbcType=INTEGER},
+      </if>
+      <if test="isVip != null">
+        #{isVip,jdbcType=INTEGER},
+      </if>
+      <if test="isAuthentication != null">
+        #{isAuthentication,jdbcType=INTEGER},
+      </if>
+      <if test="tyId != null">
+        #{tyId,jdbcType=VARCHAR},
+      </if>
+      <if test="umoneyId != null">
+        #{umoneyId,jdbcType=VARCHAR},
+      </if>
+      <if test="utypeId != null">
+        #{utypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="egidId != null">
+        #{egidId,jdbcType=VARCHAR},
+      </if>
+      <if test="citycode != null">
+        #{citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberid != null">
+        #{memberid,jdbcType=VARCHAR},
+      </if>
+      <if test="creditrdNum != null">
+        #{creditrdNum,jdbcType=INTEGER},
+      </if>
+      <if test="userrefereeUid != null">
+        #{userrefereeUid,jdbcType=VARCHAR},
+      </if>
+      <if test="usermanagerUid != null">
+        #{usermanagerUid,jdbcType=VARCHAR},
+      </if>
+      <if test="introductionIdfront != null">
+        #{introductionIdfront,jdbcType=VARCHAR},
+      </if>
+      <if test="introductionIdback != null">
+        #{introductionIdback,jdbcType=VARCHAR},
+      </if>
+      <if test="introductionLicense != null">
+        #{introductionLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="pubactivitiesIspay != null">
+        #{pubactivitiesIspay,jdbcType=INTEGER},
+      </if>
+      <if test="userIsactivation != null">
+        #{userIsactivation,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberDays != null">
+        #{memberDays,jdbcType=INTEGER},
+      </if>
+      <if test="resourceStrategyIsexperience != null">
+        #{resourceStrategyIsexperience,jdbcType=INTEGER},
+      </if>
+      <if test="experienceTime != null">
+        #{experienceTime,jdbcType=DATE},
+      </if>
+      <if test="experienceutypeId != null">
+        #{experienceutypeId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TdUserExample" resultType="java.lang.Long">
+    select count(*) from td_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update td_user
+    <set>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openId != null">
+        open_id = #{record.openId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uNickname != null">
+        u_nickname = #{record.uNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.headUrl != null">
+        head_url = #{record.headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uSex != null">
+        u_sex = #{record.uSex,jdbcType=INTEGER},
+      </if>
+      <if test="record.ubirthday != null">
+        ubirthday = #{record.ubirthday,jdbcType=DATE},
+      </if>
+      <if test="record.uName != null">
+        u_name = #{record.uName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uCard != null">
+        u_card = #{record.uCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uPhone != null">
+        u_phone = #{record.uPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uBalance != null">
+        u_balance = #{record.uBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.isPay != null">
+        is_pay = #{record.isPay,jdbcType=INTEGER},
+      </if>
+      <if test="record.isVip != null">
+        is_vip = #{record.isVip,jdbcType=INTEGER},
+      </if>
+      <if test="record.isAuthentication != null">
+        is_authentication = #{record.isAuthentication,jdbcType=INTEGER},
+      </if>
+      <if test="record.tyId != null">
+        ty_id = #{record.tyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.umoneyId != null">
+        umoney_id = #{record.umoneyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.utypeId != null">
+        utype_id = #{record.utypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.egidId != null">
+        egid_id = #{record.egidId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.citycode != null">
+        citycode = #{record.citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberid != null">
+        memberid = #{record.memberid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creditrdNum != null">
+        creditrd_num = #{record.creditrdNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.userrefereeUid != null">
+        userReferee_uid = #{record.userrefereeUid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usermanagerUid != null">
+        userManager_uid = #{record.usermanagerUid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.introductionIdfront != null">
+        introduction_idfront = #{record.introductionIdfront,jdbcType=VARCHAR},
+      </if>
+      <if test="record.introductionIdback != null">
+        introduction_idback = #{record.introductionIdback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.introductionLicense != null">
+        introduction_license = #{record.introductionLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userType != null">
+        user_type = #{record.userType,jdbcType=INTEGER},
+      </if>
+      <if test="record.pubactivitiesIspay != null">
+        pubactivities_ispay = #{record.pubactivitiesIspay,jdbcType=INTEGER},
+      </if>
+      <if test="record.userIsactivation != null">
+        user_isactivation = #{record.userIsactivation,jdbcType=INTEGER},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.memberDays != null">
+        member_days = #{record.memberDays,jdbcType=INTEGER},
+      </if>
+      <if test="record.resourceStrategyIsexperience != null">
+        resource_strategy_isexperience = #{record.resourceStrategyIsexperience,jdbcType=INTEGER},
+      </if>
+      <if test="record.experienceTime != null">
+        experience_time = #{record.experienceTime,jdbcType=DATE},
+      </if>
+      <if test="record.experienceutypeId != null">
+        experienceutype_id = #{record.experienceutypeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update td_user
+    set user_id = #{record.userId,jdbcType=VARCHAR},
+      open_id = #{record.openId,jdbcType=VARCHAR},
+      u_nickname = #{record.uNickname,jdbcType=VARCHAR},
+      head_url = #{record.headUrl,jdbcType=VARCHAR},
+      u_sex = #{record.uSex,jdbcType=INTEGER},
+      ubirthday = #{record.ubirthday,jdbcType=DATE},
+      u_name = #{record.uName,jdbcType=VARCHAR},
+      u_card = #{record.uCard,jdbcType=VARCHAR},
+      u_phone = #{record.uPhone,jdbcType=VARCHAR},
+      u_balance = #{record.uBalance,jdbcType=DOUBLE},
+      is_pay = #{record.isPay,jdbcType=INTEGER},
+      is_vip = #{record.isVip,jdbcType=INTEGER},
+      is_authentication = #{record.isAuthentication,jdbcType=INTEGER},
+      ty_id = #{record.tyId,jdbcType=VARCHAR},
+      umoney_id = #{record.umoneyId,jdbcType=VARCHAR},
+      utype_id = #{record.utypeId,jdbcType=VARCHAR},
+      egid_id = #{record.egidId,jdbcType=VARCHAR},
+      citycode = #{record.citycode,jdbcType=VARCHAR},
+      memberid = #{record.memberid,jdbcType=VARCHAR},
+      creditrd_num = #{record.creditrdNum,jdbcType=INTEGER},
+      userReferee_uid = #{record.userrefereeUid,jdbcType=VARCHAR},
+      userManager_uid = #{record.usermanagerUid,jdbcType=VARCHAR},
+      introduction_idfront = #{record.introductionIdfront,jdbcType=VARCHAR},
+      introduction_idback = #{record.introductionIdback,jdbcType=VARCHAR},
+      introduction_license = #{record.introductionLicense,jdbcType=VARCHAR},
+      user_type = #{record.userType,jdbcType=INTEGER},
+      pubactivities_ispay = #{record.pubactivitiesIspay,jdbcType=INTEGER},
+      user_isactivation = #{record.userIsactivation,jdbcType=INTEGER},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP},
+      member_days = #{record.memberDays,jdbcType=INTEGER},
+      resource_strategy_isexperience = #{record.resourceStrategyIsexperience,jdbcType=INTEGER},
+      experience_time = #{record.experienceTime,jdbcType=DATE},
+      experienceutype_id = #{record.experienceutypeId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TdUser">
+    update td_user
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="uNickname != null">
+        u_nickname = #{uNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="headUrl != null">
+        head_url = #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="uSex != null">
+        u_sex = #{uSex,jdbcType=INTEGER},
+      </if>
+      <if test="ubirthday != null">
+        ubirthday = #{ubirthday,jdbcType=DATE},
+      </if>
+      <if test="uName != null">
+        u_name = #{uName,jdbcType=VARCHAR},
+      </if>
+      <if test="uCard != null">
+        u_card = #{uCard,jdbcType=VARCHAR},
+      </if>
+      <if test="uPhone != null">
+        u_phone = #{uPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="uBalance != null">
+        u_balance = #{uBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="isPay != null">
+        is_pay = #{isPay,jdbcType=INTEGER},
+      </if>
+      <if test="isVip != null">
+        is_vip = #{isVip,jdbcType=INTEGER},
+      </if>
+      <if test="isAuthentication != null">
+        is_authentication = #{isAuthentication,jdbcType=INTEGER},
+      </if>
+      <if test="tyId != null">
+        ty_id = #{tyId,jdbcType=VARCHAR},
+      </if>
+      <if test="umoneyId != null">
+        umoney_id = #{umoneyId,jdbcType=VARCHAR},
+      </if>
+      <if test="utypeId != null">
+        utype_id = #{utypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="egidId != null">
+        egid_id = #{egidId,jdbcType=VARCHAR},
+      </if>
+      <if test="citycode != null">
+        citycode = #{citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberid != null">
+        memberid = #{memberid,jdbcType=VARCHAR},
+      </if>
+      <if test="creditrdNum != null">
+        creditrd_num = #{creditrdNum,jdbcType=INTEGER},
+      </if>
+      <if test="userrefereeUid != null">
+        userReferee_uid = #{userrefereeUid,jdbcType=VARCHAR},
+      </if>
+      <if test="usermanagerUid != null">
+        userManager_uid = #{usermanagerUid,jdbcType=VARCHAR},
+      </if>
+      <if test="introductionIdfront != null">
+        introduction_idfront = #{introductionIdfront,jdbcType=VARCHAR},
+      </if>
+      <if test="introductionIdback != null">
+        introduction_idback = #{introductionIdback,jdbcType=VARCHAR},
+      </if>
+      <if test="introductionLicense != null">
+        introduction_license = #{introductionLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="pubactivitiesIspay != null">
+        pubactivities_ispay = #{pubactivitiesIspay,jdbcType=INTEGER},
+      </if>
+      <if test="userIsactivation != null">
+        user_isactivation = #{userIsactivation,jdbcType=INTEGER},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberDays != null">
+        member_days = #{memberDays,jdbcType=INTEGER},
+      </if>
+      <if test="resourceStrategyIsexperience != null">
+        resource_strategy_isexperience = #{resourceStrategyIsexperience,jdbcType=INTEGER},
+      </if>
+      <if test="experienceTime != null">
+        experience_time = #{experienceTime,jdbcType=DATE},
+      </if>
+      <if test="experienceutypeId != null">
+        experienceutype_id = #{experienceutypeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TdUser">
+    update td_user
+    set open_id = #{openId,jdbcType=VARCHAR},
+      u_nickname = #{uNickname,jdbcType=VARCHAR},
+      head_url = #{headUrl,jdbcType=VARCHAR},
+      u_sex = #{uSex,jdbcType=INTEGER},
+      ubirthday = #{ubirthday,jdbcType=DATE},
+      u_name = #{uName,jdbcType=VARCHAR},
+      u_card = #{uCard,jdbcType=VARCHAR},
+      u_phone = #{uPhone,jdbcType=VARCHAR},
+      u_balance = #{uBalance,jdbcType=DOUBLE},
+      is_pay = #{isPay,jdbcType=INTEGER},
+      is_vip = #{isVip,jdbcType=INTEGER},
+      is_authentication = #{isAuthentication,jdbcType=INTEGER},
+      ty_id = #{tyId,jdbcType=VARCHAR},
+      umoney_id = #{umoneyId,jdbcType=VARCHAR},
+      utype_id = #{utypeId,jdbcType=VARCHAR},
+      egid_id = #{egidId,jdbcType=VARCHAR},
+      citycode = #{citycode,jdbcType=VARCHAR},
+      memberid = #{memberid,jdbcType=VARCHAR},
+      creditrd_num = #{creditrdNum,jdbcType=INTEGER},
+      userReferee_uid = #{userrefereeUid,jdbcType=VARCHAR},
+      userManager_uid = #{usermanagerUid,jdbcType=VARCHAR},
+      introduction_idfront = #{introductionIdfront,jdbcType=VARCHAR},
+      introduction_idback = #{introductionIdback,jdbcType=VARCHAR},
+      introduction_license = #{introductionLicense,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=INTEGER},
+      pubactivities_ispay = #{pubactivitiesIspay,jdbcType=INTEGER},
+      user_isactivation = #{userIsactivation,jdbcType=INTEGER},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
+      member_days = #{memberDays,jdbcType=INTEGER},
+      resource_strategy_isexperience = #{resourceStrategyIsexperience,jdbcType=INTEGER},
+      experience_time = #{experienceTime,jdbcType=DATE},
+      experienceutype_id = #{experienceutypeId,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update> -->
+  <select id="getAllTdUserlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Base_Column_List"></include>
+		
+		 from td_user
+	 <where>
+	
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			u_nickname LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		 <if test="pd.userReferee_uid !=null and pd.userReferee_uid!=''">
+		and userReferee_uid = #{pd.userReferee_uid}
+		</if> 
+		
+		 <if test="pd.userManager_uid !=null and pd.userManager_uid!=''">
+		and userManager_uid = #{pd.userManager_uid}
+		</if> 
+		 <if test="pd.memberid !=null and pd.memberid!=''">
+		and memberid = #{pd.memberid}
+		</if> 
+	    <if test="pd.user_isactivation !=1">
+		and user_isactivation !=1 and user_isactivation =''
+		</if>
+		<if test="pd.user_isactivation ==1">
+		and user_isactivation =1
+		</if>
+     <if test="pd.start != null and pd.start != ''"><!-- 状态检索 -->
+		 and created &gt;= #{pd.start}
+	  </if>
+	  <if test="pd.end != null and pd.end != ''"><!-- 状态检索 -->
+		 and created &lt;= #{pd.end}
+	  </if>
+		<if test="pd.open_id !=null and pd.open_id !=''">
+		and user_isactivation = #{pd.open_id} 
+		</if>
+	
+		
+		</where>  
+	    order by updated  desc
+	</select>
+</mapper>
