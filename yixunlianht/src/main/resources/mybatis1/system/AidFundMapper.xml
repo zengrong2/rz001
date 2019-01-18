@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AidFundMapper">
+ <!--  <resultMap id="TdActivitySponsorDistributeExtract" type="ActivitySponsorDistributeExtract">
+    <result column="activity_sponsor_distribute_extract_id" jdbcType="VARCHAR" property="activitySponsorDistributeExtractId" />
+    <result column="activity_sponsor_distribute_extract_type" jdbcType="INTEGER" property="activitySponsorDistributeExtractType" />
+    <result column="activity_sponsor_distribute_extract_rate" jdbcType="DECIMAL" property="activitySponsorDistributeExtractRate" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap> -->
+	<!-- 字段 -->
+	<sql id="Field">
+	    af_id, background_transfer_money,user_id ,created, updated,remark,activity_id,transfer_type,
+	    transfer_single_number,transf_time,payment_method,payment_status
+
+	</sql>
+	
+	<!-- 字段值 -->
+<!-- 	<sql id="FieldValue">
+		#{pId},
+		#{pName},
+		#{pSalary},
+		#{companyId},
+		#{pAddress},
+		#{pJuli},
+		#{pContent},
+		#{pRequirement},
+		#{updated},
+		#{created},
+		#{is_state},
+		#{remark},
+		#{work}
+		
+	</sql> -->
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_aid_fund
+	</sql>
+	
+	<select id="getAllTdAidFundlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+		<if test="pd.userId !=null and pd.userId!=''">
+		and user_id = ${pd.userId}
+		</if>
+		</where>
+	    order by updated  desc
+	</select>
+	
+	<select id="financialAidFundInputStatistics" parameterType="page" resultType="pd">
+	
+		select
+		DATE_FORMAT(transf_time,'%m') months,sum(background_transfer_money) money
+		from
+		<include refid="tableName"></include>
+		where
+    	<!--  transf_time BETWEEN  ${pd.startYear} and ${pd.endYear} -->
+    	transf_time BETWEEN  '${pd.startYear}' and  '${pd.endYear}'
+		
+	
+	    group by months
+	</select>
+</mapper>

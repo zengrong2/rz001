@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChapterMapper">
+
+	<!-- 字段 -->
+	<sql id="Field">
+		chapter_id,
+		chapter_name,
+		created,
+		updated,
+		curriculum_id,
+		curriculum_introduction,
+		curriculum_name
+		
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{chapterId},
+		#{chapterName},
+		#{created},
+		#{updated},
+		#{curriculumId},
+		#{curriculum_introduction},
+		#{curriculum_name}
+		
+		
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_chapter
+	</sql>
+	
+	<!-- 根据id查询 -->
+	<select id="findListChapterByCurriculumId" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where curriculum_id=#{curriculum_id}	
+	 order by created desc
+	</select>
+	
+	<insert id="addChapterByCid" parameterType="pd">
+		insert into <include refid="tableName"></include> (
+		chapter_name,created,updated,curriculum_id
+		) values (
+		#{chapter_name},#{update_time},#{update_time},#{curriculum_id}
+		)
+	</insert>
+	
+	<delete id="deleteChapterBycid" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			chapter_id = #{chapter_id}
+	</delete>
+</mapper>

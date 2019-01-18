@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdSetBeneficiaryUserMapper">
+ 
+	<!-- 字段 -->
+	<sql id="Field">
+	    beneficiary_id, beneficiary_user_id,member_user_id ,created, updated,remark,is_cancel
+
+	</sql>
+	
+	
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_set_beneficiary
+	</sql>
+	
+	<select id="getAllSetBeneficiaryUserlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+	
+		<if test="pd.beneficiaryUserId!= null and pd.beneficiaryUserId!= ''">
+			and
+			beneficiary_user_id = #{pd.beneficiaryUserId}
+		</if>
+		<if test="pd.member_user_id!= null and pd.member_user_id != ''">
+			and
+			member_user_id = #{pd.member_user_id}
+		</if>
+		</where>
+	    order by updated  desc
+	</select>
+	
+</mapper>

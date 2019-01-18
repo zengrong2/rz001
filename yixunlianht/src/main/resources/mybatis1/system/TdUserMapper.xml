@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdUserMapper">
+  <resultMap id="BaseResultMap" type="TdUser">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="u_nickname" jdbcType="VARCHAR" property="uNickname" />
+    <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+    <result column="u_sex" jdbcType="INTEGER" property="uSex" />
+    <result column="ubirthday" jdbcType="DATE" property="ubirthday" />
+    <result column="u_name" jdbcType="VARCHAR" property="uName" />
+    <result column="u_card" jdbcType="VARCHAR" property="uCard" />
+  
+    <result column="u_phone" jdbcType="VARCHAR" property="uPhone" />
+    <result column="u_balance" jdbcType="DOUBLE" property="uBalance" />
+    <result column="is_pay" jdbcType="INTEGER" property="isPay" />
+    <result column="is_vip" jdbcType="INTEGER" property="isVip" />
+    <result column="is_authentication" jdbcType="INTEGER" property="isAuthentication" />
+  
+    <result column="utype_id" jdbcType="VARCHAR" property="utypeId" />
+    <result column="egid_id" jdbcType="VARCHAR" property="egidId" />
+    <result column="citycode" jdbcType="VARCHAR" property="citycode" />
+    <result column="memberid" jdbcType="VARCHAR" property="memberid" />
+    <result column="creditrd_num" jdbcType="INTEGER" property="creditrdNum" />
+    <result column="userReferee_uid" jdbcType="VARCHAR" property="userrefereeUid" />
+    <result column="userManager_uid" jdbcType="VARCHAR" property="usermanagerUid" />
+    <result column="introduction_idfront" jdbcType="VARCHAR" property="introductionIdfront" />
+    <result column="introduction_idback" jdbcType="VARCHAR" property="introductionIdback" />
+    <result column="introduction_license" jdbcType="VARCHAR" property="introductionLicense" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="pubactivities_ispay" jdbcType="INTEGER" property="pubactivitiesIspay" />
+    <result column="user_isactivation" jdbcType="INTEGER" property="userIsactivation" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="member_days" jdbcType="INTEGER" property="memberDays" />
+    <result column="resource_strategy_isexperience" jdbcType="INTEGER" property="resourceStrategyIsexperience" />
+    <result column="closed_user_status" jdbcType="VARCHAR" property="closedUserStatus" />
+   <!--  <result column="experience_time" jdbcType="DATE" property="experienceTime" />
+    <result column="experienceutype_id" jdbcType="VARCHAR" property="experienceutypeId" /> -->
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    user_id, open_id, u_nickname, head_url, u_sex, ubirthday, u_name, u_card, u_phone, 
+    u_balance, is_pay, is_vip, is_authentication,utype_id, egid_id, 
+     memberid, creditrd_num, userReferee_uid, userManager_uid, introduction_idfront, 
+    introduction_idback, introduction_license, user_type, pubactivities_ispay, user_isactivation, 
+    created, updated, member_days, resource_strategy_isexperience,closed_user_status,province_citycode ,
+    city_citycode ,area_citycode ,address_name ,change_head_url,egid_name,
+    professional_title,can_provide ,need,belief_in_life,wx_nickname,is_special_activitytype_user,
+    experience_time,experience_end_time,member_start_time,member_end_time,register_time         
+    <!-- , experience_time, experienceutype_id -->
+  </sql>
+
+  <select id="getAllTdUserlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Base_Column_List"></include>
+		
+		 from td_user
+	 <where>
+	
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			u_nickname LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		 <if test="pd.userReferee_uid !=null and pd.userReferee_uid!=''">
+		and userReferee_uid = #{pd.userReferee_uid}
+		</if> 
+		
+		 <if test="pd.userManager_uid !=null and pd.userManager_uid!=''">
+		and userManager_uid = #{pd.userManager_uid}
+		</if> 
+		 <if test="pd.memberid !=null and pd.memberid!=''">
+		and memberid = #{pd.memberid}
+		</if> 
+	    <if test="pd.user_isactivation1 !=null and pd.user_isactivation1 !=''">
+		and user_isactivation =0
+		</if>
+		 
+		<if test="pd.user_isactivation !=null and pd.user_isactivation !=''">
+		and user_isactivation !=0
+		</if>
+     <if test="pd.registerStart != null and pd.registerStart != ''"><!-- 状态检索 -->
+		 and created &gt;= #{pd.registerStart}
+	  </if>
+	  <if test="pd.registerEnd != null and pd.registerEnd != ''"><!-- 状态检索 -->
+		 and created &lt;= #{pd.registerEnd}
+	  </if>
+		 <if test="pd.open_id !=null and pd.open_id !=''">
+		and wx_nickname = #{pd.open_id} 
+		</if> 
+	 <if test="pd.citycode !=null and pd.citycode !=''">
+		and city_citycode = #{pd.citycode} 
+		</if> 
+		<!-- 会员升级时间 -->
+	  <if test="pd.memberStartTime != null and pd.memberStartTime != ''"><!-- 状态检索 -->
+		 and member_start_time &gt;= #{pd.memberStartTime}
+	  </if>
+	  <if test="pd.memberEndTime != null and pd.memberEndTime != ''"><!-- 状态检索 -->
+		 and member_start_time &lt;= #{pd.memberEndTime}
+	  </if>
+	  <!-- 体验vip升级时间 -->
+	    <if test="pd.memberStartTime != null and pd.memberStartTime != ''"><!-- 状态检索 -->
+		 or experience_time &gt;= #{pd.memberStartTime}
+	  </if>
+	  <if test="pd.memberEndTime != null and pd.memberEndTime != ''"><!-- 状态检索 -->
+		 and experience_time &lt;= #{pd.memberEndTime}
+	  </if>
+	  <!-- 会员等级 UType_IDs -->
+	   <if test="pd.UType_IDs !=null and pd.UType_IDs !=''">
+		and utype_id = #{pd.UType_IDs} 
+		</if> 
+		<!-- 区域 cityCode_IDs -->
+	   <if test="pd.cityCode_IDs !=null and pd.cityCode_IDs !=''">
+		and province_citycode = #{pd.cityCode_IDs} 
+		or city_citycode = #{pd.cityCode_IDs} 
+		or area_citycode = #{pd.cityCode_IDs}
+	   </if> 
+		</where>  
+	    order by register_time  desc
+	</select>
+	
+	<select id="getDiamondCustomerManagerStatistics" parameterType="page" resultType="pd">
+	
+		select
+		DATE_FORMAT(created,'%m') months,count(user_id) count
+		from
+		td_user
+		where
+		<if test="pd.diamondCustomerManagerId !=null and pd.diamondCustomerManagerId !=''">
+		 utype_id = '${pd.diamondCustomerManagerId}' and
+		</if>
+		<if test="pd.vipCustomerManagerId !=null and pd.vipCustomerManagerId !=''">
+		 utype_id = '${pd.vipCustomerManagerId}' and
+		</if>
+    	
+    	created BETWEEN  '${pd.startYear}' and  '${pd.endYear}'
+	    group by months
+	</select>
+	
+	<select id="getVipCustomerManagerStatistics" parameterType="page" resultType="pd">
+	
+		select
+		DATE_FORMAT(created,'%m') months,count(user_id) count
+		from
+		td_user
+		where
+		
+		<if test="pd.vipCustomerManagerId !=null and pd.vipCustomerManagerId !=''">
+		 utype_id = '${pd.vipCustomerManagerId}' and
+		</if>
+    	
+    	created BETWEEN  '${pd.startYear}' and  '${pd.endYear}'
+	    group by months
+	</select>
+
+	<select id="getVipTryCustomerManagerStatistics" parameterType="page" resultType="pd">
+	
+		select
+		DATE_FORMAT(created,'%m') months,count(user_id) count
+		from
+		td_user
+		where
+		
+		<if test="pd.vipTryCustomerManagerId !=null and pd.vipTryCustomerManagerId !=''">
+		 utype_id = '${pd.vipTryCustomerManagerId}' and
+		</if>
+    	
+    	created BETWEEN  '${pd.startYear}' and  '${pd.endYear}'
+	    group by months
+	</select>
+	
+	<select id="getVipExperienceCustomerManagerStatistics" parameterType="page" resultType="pd">
+	
+		select
+		DATE_FORMAT(created,'%m') months,count(user_id) count
+		from
+		td_user
+		where
+		
+		<if test="pd.vipExperienceCustomerManagerId !=null and pd.vipExperienceCustomerManagerId !=''">
+		 utype_id = '${pd.vipExperienceCustomerManagerId}' and
+		</if>
+    	
+    	created BETWEEN  '${pd.startYear}' and  '${pd.endYear}'
+	    group by months
+	</select>
+	
+	<select id="getCustomerManagerStatistics" parameterType="page" resultType="pd">
+	
+		select
+		DATE_FORMAT(created,'%m') months,count(user_id) count
+		from
+		td_user
+		where
+		
+		<if test="pd.CustomerManagerId !=null and pd.CustomerManagerId !=''">
+		 utype_id = '${pd.CustomerManagerId}' and
+		</if>
+    	
+    	created BETWEEN  '${pd.startYear}' and  '${pd.endYear}'
+	    group by months
+	</select>
+	<select id="getCustomerStatistics" parameterType="page" resultType="pd">
+	
+		select
+		DATE_FORMAT(created,'%m') months,count(user_id) count
+		from
+		td_user
+		where
+		
+		<if test="pd.CustomerId !=null and pd.CustomerId !=''">
+		 utype_id = '${pd.CustomerId}' and
+		</if>
+    	
+    	created BETWEEN  '${pd.startYear}' and  '${pd.endYear}'
+	    group by months
+	</select>
+</mapper>

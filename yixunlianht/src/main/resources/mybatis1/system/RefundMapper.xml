@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RefundMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_refund
+	</sql>
+	
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		refund_id,
+		pay_way,
+		number,
+		user_id,
+		money,
+		phone,
+		name,
+		update_time,
+		is_check,
+		created,
+		updated,
+		order_id
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{refund_id},
+		#{pay_way},
+		#{number},
+		#{user_id},
+		#{money},
+		#{phone},
+		#{name},
+		#{update_time},
+		#{is_check},
+		#{created},
+		#{updated},
+		#{order_id}
+	</sql>
+	
+	
+	
+	<!-- 问题列表 -->
+	<select id="refundlistPage" parameterType="page" resultType="pd">
+		select  
+		    *
+		from <include refid="tableName"></include> 
+		order by created desc
+	</select>
+	
+	<!-- 根据id查询问题详情 -->
+	<select id="getRefundById" parameterType="pd" resultType="pd">
+		select  *
+		from <include refid="tableName"></include> 
+		where refund_id=#{refund_id}
+	</select>
+<!-- 更新 -->
+		<update id="editC" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set 
+				is_check      =#{is_check},
+			    update_time    =#{update_time}
+			where 
+				refund_id   = #{refund_id}
+	</update>
+</mapper>

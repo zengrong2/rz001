@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StudentResumeMapper">
+<resultMap type="Application" id="resumeResultMap">
+		<id column="application_id" property="applicationId"/>
+		<result column="application_name" property="applicationName" />
+		<result column="application_phone" property="applicationPhone" />
+		<result column="application_age" property="applicationAge" />
+		<result column="application_sex" property="applicationSex" />
+		<result column="application_address" property="applicationAddress" />
+		<result column="application_edcation" property="applicationEdcation" />
+		<result column="application_work" property="applicationWork" />
+		<result column="created" property="created"/>
+         <result column="updated" property="updated"/>
+         <result column="user_id" property="user_id"/>
+         <result column="company_id" property="company_id"/>
+         <result column="p_id" property="p_id"/>
+        
+	</resultMap>
+	<!-- 字段 -->
+	<sql id="Field">
+		application_id,
+		application_name,
+		application_phone,
+		application_age,
+		application_sex,
+		application_address,
+		application_edcation,
+		application_work,
+		company_id,
+		p_id,
+	    updated,
+	    created,
+	    user_id
+	 
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{applicationId},
+		#{applicationName},
+		#{applicationPhone},
+		#{applicationAge},
+		#{applicationSex},
+		#{applicationAddress},
+		#{applicationEdcation},
+		#{applicationWork},
+		#{company_id},
+		#{p_id},
+		#{updated},
+		#{created},
+		#{user_id}
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_application
+	</sql>
+	
+	<select id="studentResumelistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			application_name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		
+		</where>
+	    order by updated  desc
+	</select>
+	
+	<!-- 导出excl -->
+	<select id="listStudentResume"  resultMap="resumeResultMap">
+	    select  
+		     <include refid="Field"></include>
+		from 
+		    <include refid="tableName"></include>
+		    
+	</select>
+	<!-- 删除简历 -->
+	<delete id="delStudentResumeByCid" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			application_id = #{application_id}
+	</delete>
+	
+	<!-- 新增 -->
+	<insert id="saveStudentResumeInfo" parameterType="pd">
+		insert into <include refid="tableName"></include> (
+		application_name,application_phone,application_age,application_sex,application_address,application_edcation,application_work,created,updated,p_id,user_id,company_id
+		) values (
+		#{application_name},#{application_phone},#{application_age},#{application_sex},#{application_address},#{application_edcation},#{application_work},#{create_time},#{update_time},#{p_id},#{user_id},#{company_id}
+		)
+	</insert>
+
+
+<!-- 根据id查询 -->
+	<select id="getStudentResumeById" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where application_id=#{application_id}	
+	</select>
+	
+	
+	<update id="editStudentResume" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set application_name          =#{application_name},
+			    application_phone         =#{application_phone},
+			    application_age     =#{application_age},
+			    application_sex         =#{application_sex},
+			    application_address     =#{application_address},
+			    application_edcation          =#{application_edcation},
+			    application_work      =#{application_work},
+			    update_time   =#{update_time},
+			    user_id       =#{user_id},
+			    company_id       =#{company_id},
+			    p_id   =#{p_id}
+			    
+			where 
+				application_id = #{application_id}
+	</update>
+	<!-- 批量删除deleteAllResume -->
+	<delete id="deleteAllResume" parameterType="String" >
+		delete from <include refid="tableName"></include>
+		where 
+			application_id in
+  			 <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                  #{item}
+             </foreach>
+            and 
+				application_id != '1'
+	</delete>
+</mapper>

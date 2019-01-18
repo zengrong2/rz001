@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdPartnerBonusInputMapper">
+
+	<!-- 字段 -->
+	<sql id="Field">
+	    partner_bonus_id, user_id,activity_id ,created, updated,remark,
+	    partner_bonus_transfer_record_money,transfer_type,transfer_single_number,
+	    transf_time,payment_method,payment_status
+
+	</sql>
+	
+	
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_partner_bonus_transfer_recordinput
+	</sql>
+	
+	<select id="getAllTdPartnerBonusInputlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+	
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			user_id LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		</where>
+	    order by updated  desc
+	</select>
+	
+	<select id="financialPartnerBonusInputStatistics" parameterType="page" resultType="pd">
+	
+		select
+		DATE_FORMAT(transf_time,'%m') months,sum(partner_bonus_transfer_record_money) money
+		from
+		<include refid="tableName"></include>
+		where
+    	<!--  transf_time BETWEEN  ${pd.startYear} and ${pd.endYear} -->
+    	transf_time BETWEEN  '${pd.startYear}' and  '${pd.endYear}'
+		
+	
+	    group by months
+	</select>
+</mapper>

@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdActivityMapper">
+  <resultMap id="BaseResultMap" type="TdActivity">
+    <id column="activity_id" jdbcType="VARCHAR" property="activityId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="activity_name" jdbcType="VARCHAR" property="activityName" />
+    <result column="activitycategory_id" jdbcType="VARCHAR" property="activitycategoryId" />
+    <result column="activitysign_starttime" jdbcType="TIMESTAMP" property="activitysignStarttime" />
+    <result column="activitysign_endtime" jdbcType="TIMESTAMP" property="activitysignEndtime" />
+    <result column="activitystart_time" jdbcType="TIMESTAMP" property="activitystartTime" />
+    <result column="activityend_time" jdbcType="TIMESTAMP" property="activityendTime" />
+    <result column="activity_countpersons" jdbcType="INTEGER" property="activityCountpersons" />
+    <result column="activity_ chargestatus" jdbcType="INTEGER" property="activityChargestatus" />
+    <result column="activity_chargemethod" jdbcType="INTEGER" property="activityChargemethod" />
+    <result column="activity_type" jdbcType="INTEGER" property="activityType" />
+    <result column="province_citycode" jdbcType="VARCHAR" property="provinceCitycode" />
+    <result column="city_citycode" jdbcType="VARCHAR" property="cityCitycode" />
+    <result column="area_citycode" jdbcType="VARCHAR" property="areaCitycode" />
+    <result column="lng" jdbcType="VARCHAR" property="lng" />
+    <result column="lat" jdbcType="VARCHAR" property="lat" />
+    <result column="activity_coverImgurl" jdbcType="VARCHAR" property="activityCoverimgurl" />
+    <result column="activity_isextract" jdbcType="INTEGER" property="activityIsextract" />
+    <result column="activity_detailsurl" jdbcType="VARCHAR" property="activityDetailsurl" />
+    <result column="activitymusic_id" jdbcType="VARCHAR" property="activitymusicId" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="online_status" jdbcType="INTEGER" property="onlineStatus" />
+    <result column="activity_signupstatus" jdbcType="INTEGER" property="activitySignupstatus" />
+    <result column="activity_status" jdbcType="INTEGER" property="activityStatus" />
+    <result column="activity_qrcode" jdbcType="VARCHAR" property="activityQrcode" />
+    <result column="share_abstract" jdbcType="VARCHAR" property="shareAbstract" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="TdActivity">
+    <result column="undercarriage_reason" jdbcType="LONGVARCHAR" property="undercarriageReason" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+   activity_id,user_id,user_nick_name,activity_name,activitycategory_id,
+   activitycategory_name,activitysign_starttime,activitysign_endtime,
+   activitystart_time,activityend_time,activity_countpersons,activity_chargestatus,
+   royalty_ratio,activity_type,province_citycode,city_citycode,citycode,
+   area_citycode,precision_demand_province_id,precision_demand_city_id,
+   precision_demand_area_id,address_name,precision_demand_address_name,
+   lng,lat,activity_coverImgurl,activity_isextract,activity_chargemethod,
+   activity_detailsurl,activitymusic_id,online_status,activity_signupstatus,
+   activity_status,activity_qrcode,undercarriage_reason,share_abstract,
+   views,join_num,payment_result,created,updated,remark
+  </sql>
+  <sql id="Blob_Column_List">
+    undercarriage_reason
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="TdActivityExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from td_activity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="TdActivityExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from td_activity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from td_activity
+    where activity_id = #{activityId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from td_activity
+    where activity_id = #{activityId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="TdActivityExample">
+    delete from td_activity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TdActivity">
+    insert into td_activity (activity_id, user_id, activity_name, 
+      activitycategory_id, activitysign_starttime, 
+      activitysign_endtime, activitystart_time, 
+      activityend_time, activity_countpersons, 
+      "activity_ chargestatus", activity_chargemethod, 
+      activity_type, province_citycode, city_citycode, 
+      area_citycode, lng, lat, 
+      activity_coverImgurl, activity_isextract, 
+      activity_detailsurl, activitymusic_id, created, 
+      updated, online_status, activity_signupstatus, 
+      activity_status, activity_qrcode, share_abstract, 
+      undercarriage_reason)
+    values (#{activityId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{activityName,jdbcType=VARCHAR}, 
+      #{activitycategoryId,jdbcType=VARCHAR}, #{activitysignStarttime,jdbcType=TIMESTAMP}, 
+      #{activitysignEndtime,jdbcType=TIMESTAMP}, #{activitystartTime,jdbcType=TIMESTAMP}, 
+      #{activityendTime,jdbcType=TIMESTAMP}, #{activityCountpersons,jdbcType=INTEGER}, 
+      #{activityChargestatus,jdbcType=INTEGER}, #{activityChargemethod,jdbcType=INTEGER}, 
+      #{activityType,jdbcType=INTEGER}, #{provinceCitycode,jdbcType=VARCHAR}, #{cityCitycode,jdbcType=VARCHAR}, 
+      #{areaCitycode,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, #{lat,jdbcType=VARCHAR}, 
+      #{activityCoverimgurl,jdbcType=VARCHAR}, #{activityIsextract,jdbcType=INTEGER}, 
+      #{activityDetailsurl,jdbcType=VARCHAR}, #{activitymusicId,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP}, #{onlineStatus,jdbcType=INTEGER}, #{activitySignupstatus,jdbcType=INTEGER}, 
+      #{activityStatus,jdbcType=INTEGER}, #{activityQrcode,jdbcType=VARCHAR}, #{shareAbstract,jdbcType=VARCHAR}, 
+      #{undercarriageReason,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="TdActivity">
+    insert into td_activity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="activityName != null">
+        activity_name,
+      </if>
+      <if test="activitycategoryId != null">
+        activitycategory_id,
+      </if>
+      <if test="activitysignStarttime != null">
+        activitysign_starttime,
+      </if>
+      <if test="activitysignEndtime != null">
+        activitysign_endtime,
+      </if>
+      <if test="activitystartTime != null">
+        activitystart_time,
+      </if>
+      <if test="activityendTime != null">
+        activityend_time,
+      </if>
+      <if test="activityCountpersons != null">
+        activity_countpersons,
+      </if>
+      <if test="activityChargestatus != null">
+        "activity_ chargestatus",
+      </if>
+      <if test="activityChargemethod != null">
+        activity_chargemethod,
+      </if>
+      <if test="activityType != null">
+        activity_type,
+      </if>
+      <if test="provinceCitycode != null">
+        province_citycode,
+      </if>
+      <if test="cityCitycode != null">
+        city_citycode,
+      </if>
+      <if test="areaCitycode != null">
+        area_citycode,
+      </if>
+      <if test="lng != null">
+        lng,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="activityCoverimgurl != null">
+        activity_coverImgurl,
+      </if>
+      <if test="activityIsextract != null">
+        activity_isextract,
+      </if>
+      <if test="activityDetailsurl != null">
+        activity_detailsurl,
+      </if>
+      <if test="activitymusicId != null">
+        activitymusic_id,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="onlineStatus != null">
+        online_status,
+      </if>
+      <if test="activitySignupstatus != null">
+        activity_signupstatus,
+      </if>
+      <if test="activityStatus != null">
+        activity_status,
+      </if>
+      <if test="activityQrcode != null">
+        activity_qrcode,
+      </if>
+      <if test="shareAbstract != null">
+        share_abstract,
+      </if>
+      <if test="undercarriageReason != null">
+        undercarriage_reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="activityId != null">
+        #{activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="activityName != null">
+        #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activitycategoryId != null">
+        #{activitycategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="activitysignStarttime != null">
+        #{activitysignStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activitysignEndtime != null">
+        #{activitysignEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activitystartTime != null">
+        #{activitystartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityendTime != null">
+        #{activityendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityCountpersons != null">
+        #{activityCountpersons,jdbcType=INTEGER},
+      </if>
+      <if test="activityChargestatus != null">
+        #{activityChargestatus,jdbcType=INTEGER},
+      </if>
+      <if test="activityChargemethod != null">
+        #{activityChargemethod,jdbcType=INTEGER},
+      </if>
+      <if test="activityType != null">
+        #{activityType,jdbcType=INTEGER},
+      </if>
+      <if test="provinceCitycode != null">
+        #{provinceCitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCitycode != null">
+        #{cityCitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCitycode != null">
+        #{areaCitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null">
+        #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="activityCoverimgurl != null">
+        #{activityCoverimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="activityIsextract != null">
+        #{activityIsextract,jdbcType=INTEGER},
+      </if>
+      <if test="activityDetailsurl != null">
+        #{activityDetailsurl,jdbcType=VARCHAR},
+      </if>
+      <if test="activitymusicId != null">
+        #{activitymusicId,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="onlineStatus != null">
+        #{onlineStatus,jdbcType=INTEGER},
+      </if>
+      <if test="activitySignupstatus != null">
+        #{activitySignupstatus,jdbcType=INTEGER},
+      </if>
+      <if test="activityStatus != null">
+        #{activityStatus,jdbcType=INTEGER},
+      </if>
+      <if test="activityQrcode != null">
+        #{activityQrcode,jdbcType=VARCHAR},
+      </if>
+      <if test="shareAbstract != null">
+        #{shareAbstract,jdbcType=VARCHAR},
+      </if>
+      <if test="undercarriageReason != null">
+        #{undercarriageReason,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TdActivityExample" resultType="java.lang.Long">
+    select count(*) from td_activity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update td_activity
+    <set>
+      <if test="record.activityId != null">
+        activity_id = #{record.activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activityName != null">
+        activity_name = #{record.activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activitycategoryId != null">
+        activitycategory_id = #{record.activitycategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activitysignStarttime != null">
+        activitysign_starttime = #{record.activitysignStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.activitysignEndtime != null">
+        activitysign_endtime = #{record.activitysignEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.activitystartTime != null">
+        activitystart_time = #{record.activitystartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.activityendTime != null">
+        activityend_time = #{record.activityendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.activityCountpersons != null">
+        activity_countpersons = #{record.activityCountpersons,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityChargestatus != null">
+        "activity_ chargestatus" = #{record.activityChargestatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityChargemethod != null">
+        activity_chargemethod = #{record.activityChargemethod,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityType != null">
+        activity_type = #{record.activityType,jdbcType=INTEGER},
+      </if>
+      <if test="record.provinceCitycode != null">
+        province_citycode = #{record.provinceCitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityCitycode != null">
+        city_citycode = #{record.cityCitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaCitycode != null">
+        area_citycode = #{record.areaCitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lng != null">
+        lng = #{record.lng,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lat != null">
+        lat = #{record.lat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activityCoverimgurl != null">
+        activity_coverImgurl = #{record.activityCoverimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activityIsextract != null">
+        activity_isextract = #{record.activityIsextract,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityDetailsurl != null">
+        activity_detailsurl = #{record.activityDetailsurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activitymusicId != null">
+        activitymusic_id = #{record.activitymusicId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.onlineStatus != null">
+        online_status = #{record.onlineStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.activitySignupstatus != null">
+        activity_signupstatus = #{record.activitySignupstatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityStatus != null">
+        activity_status = #{record.activityStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityQrcode != null">
+        activity_qrcode = #{record.activityQrcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shareAbstract != null">
+        share_abstract = #{record.shareAbstract,jdbcType=VARCHAR},
+      </if>
+      <if test="record.undercarriageReason != null">
+        undercarriage_reason = #{record.undercarriageReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update td_activity
+    set activity_id = #{record.activityId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      activity_name = #{record.activityName,jdbcType=VARCHAR},
+      activitycategory_id = #{record.activitycategoryId,jdbcType=VARCHAR},
+      activitysign_starttime = #{record.activitysignStarttime,jdbcType=TIMESTAMP},
+      activitysign_endtime = #{record.activitysignEndtime,jdbcType=TIMESTAMP},
+      activitystart_time = #{record.activitystartTime,jdbcType=TIMESTAMP},
+      activityend_time = #{record.activityendTime,jdbcType=TIMESTAMP},
+      activity_countpersons = #{record.activityCountpersons,jdbcType=INTEGER},
+      "activity_ chargestatus" = #{record.activityChargestatus,jdbcType=INTEGER},
+      activity_chargemethod = #{record.activityChargemethod,jdbcType=INTEGER},
+      activity_type = #{record.activityType,jdbcType=INTEGER},
+      province_citycode = #{record.provinceCitycode,jdbcType=VARCHAR},
+      city_citycode = #{record.cityCitycode,jdbcType=VARCHAR},
+      area_citycode = #{record.areaCitycode,jdbcType=VARCHAR},
+      lng = #{record.lng,jdbcType=VARCHAR},
+      lat = #{record.lat,jdbcType=VARCHAR},
+      activity_coverImgurl = #{record.activityCoverimgurl,jdbcType=VARCHAR},
+      activity_isextract = #{record.activityIsextract,jdbcType=INTEGER},
+      activity_detailsurl = #{record.activityDetailsurl,jdbcType=VARCHAR},
+      activitymusic_id = #{record.activitymusicId,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP},
+      online_status = #{record.onlineStatus,jdbcType=INTEGER},
+      activity_signupstatus = #{record.activitySignupstatus,jdbcType=INTEGER},
+      activity_status = #{record.activityStatus,jdbcType=INTEGER},
+      activity_qrcode = #{record.activityQrcode,jdbcType=VARCHAR},
+      share_abstract = #{record.shareAbstract,jdbcType=VARCHAR},
+      undercarriage_reason = #{record.undercarriageReason,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update td_activity
+    set activity_id = #{record.activityId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      activity_name = #{record.activityName,jdbcType=VARCHAR},
+      activitycategory_id = #{record.activitycategoryId,jdbcType=VARCHAR},
+      activitysign_starttime = #{record.activitysignStarttime,jdbcType=TIMESTAMP},
+      activitysign_endtime = #{record.activitysignEndtime,jdbcType=TIMESTAMP},
+      activitystart_time = #{record.activitystartTime,jdbcType=TIMESTAMP},
+      activityend_time = #{record.activityendTime,jdbcType=TIMESTAMP},
+      activity_countpersons = #{record.activityCountpersons,jdbcType=INTEGER},
+      "activity_ chargestatus" = #{record.activityChargestatus,jdbcType=INTEGER},
+      activity_chargemethod = #{record.activityChargemethod,jdbcType=INTEGER},
+      activity_type = #{record.activityType,jdbcType=INTEGER},
+      province_citycode = #{record.provinceCitycode,jdbcType=VARCHAR},
+      city_citycode = #{record.cityCitycode,jdbcType=VARCHAR},
+      area_citycode = #{record.areaCitycode,jdbcType=VARCHAR},
+      lng = #{record.lng,jdbcType=VARCHAR},
+      lat = #{record.lat,jdbcType=VARCHAR},
+      activity_coverImgurl = #{record.activityCoverimgurl,jdbcType=VARCHAR},
+      activity_isextract = #{record.activityIsextract,jdbcType=INTEGER},
+      activity_detailsurl = #{record.activityDetailsurl,jdbcType=VARCHAR},
+      activitymusic_id = #{record.activitymusicId,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP},
+      online_status = #{record.onlineStatus,jdbcType=INTEGER},
+      activity_signupstatus = #{record.activitySignupstatus,jdbcType=INTEGER},
+      activity_status = #{record.activityStatus,jdbcType=INTEGER},
+      activity_qrcode = #{record.activityQrcode,jdbcType=VARCHAR},
+      share_abstract = #{record.shareAbstract,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TdActivity">
+    update td_activity
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="activityName != null">
+        activity_name = #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activitycategoryId != null">
+        activitycategory_id = #{activitycategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="activitysignStarttime != null">
+        activitysign_starttime = #{activitysignStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activitysignEndtime != null">
+        activitysign_endtime = #{activitysignEndtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activitystartTime != null">
+        activitystart_time = #{activitystartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityendTime != null">
+        activityend_time = #{activityendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityCountpersons != null">
+        activity_countpersons = #{activityCountpersons,jdbcType=INTEGER},
+      </if>
+      <if test="activityChargestatus != null">
+        "activity_ chargestatus" = #{activityChargestatus,jdbcType=INTEGER},
+      </if>
+      <if test="activityChargemethod != null">
+        activity_chargemethod = #{activityChargemethod,jdbcType=INTEGER},
+      </if>
+      <if test="activityType != null">
+        activity_type = #{activityType,jdbcType=INTEGER},
+      </if>
+      <if test="provinceCitycode != null">
+        province_citycode = #{provinceCitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCitycode != null">
+        city_citycode = #{cityCitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCitycode != null">
+        area_citycode = #{areaCitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null">
+        lng = #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="activityCoverimgurl != null">
+        activity_coverImgurl = #{activityCoverimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="activityIsextract != null">
+        activity_isextract = #{activityIsextract,jdbcType=INTEGER},
+      </if>
+      <if test="activityDetailsurl != null">
+        activity_detailsurl = #{activityDetailsurl,jdbcType=VARCHAR},
+      </if>
+      <if test="activitymusicId != null">
+        activitymusic_id = #{activitymusicId,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="onlineStatus != null">
+        online_status = #{onlineStatus,jdbcType=INTEGER},
+      </if>
+      <if test="activitySignupstatus != null">
+        activity_signupstatus = #{activitySignupstatus,jdbcType=INTEGER},
+      </if>
+      <if test="activityStatus != null">
+        activity_status = #{activityStatus,jdbcType=INTEGER},
+      </if>
+      <if test="activityQrcode != null">
+        activity_qrcode = #{activityQrcode,jdbcType=VARCHAR},
+      </if>
+      <if test="shareAbstract != null">
+        share_abstract = #{shareAbstract,jdbcType=VARCHAR},
+      </if>
+      <if test="undercarriageReason != null">
+        undercarriage_reason = #{undercarriageReason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where activity_id = #{activityId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="TdActivity">
+    update td_activity
+    set user_id = #{userId,jdbcType=VARCHAR},
+      activity_name = #{activityName,jdbcType=VARCHAR},
+      activitycategory_id = #{activitycategoryId,jdbcType=VARCHAR},
+      activitysign_starttime = #{activitysignStarttime,jdbcType=TIMESTAMP},
+      activitysign_endtime = #{activitysignEndtime,jdbcType=TIMESTAMP},
+      activitystart_time = #{activitystartTime,jdbcType=TIMESTAMP},
+      activityend_time = #{activityendTime,jdbcType=TIMESTAMP},
+      activity_countpersons = #{activityCountpersons,jdbcType=INTEGER},
+      "activity_ chargestatus" = #{activityChargestatus,jdbcType=INTEGER},
+      activity_chargemethod = #{activityChargemethod,jdbcType=INTEGER},
+      activity_type = #{activityType,jdbcType=INTEGER},
+      province_citycode = #{provinceCitycode,jdbcType=VARCHAR},
+      city_citycode = #{cityCitycode,jdbcType=VARCHAR},
+      area_citycode = #{areaCitycode,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      activity_coverImgurl = #{activityCoverimgurl,jdbcType=VARCHAR},
+      activity_isextract = #{activityIsextract,jdbcType=INTEGER},
+      activity_detailsurl = #{activityDetailsurl,jdbcType=VARCHAR},
+      activitymusic_id = #{activitymusicId,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
+      online_status = #{onlineStatus,jdbcType=INTEGER},
+      activity_signupstatus = #{activitySignupstatus,jdbcType=INTEGER},
+      activity_status = #{activityStatus,jdbcType=INTEGER},
+      activity_qrcode = #{activityQrcode,jdbcType=VARCHAR},
+      share_abstract = #{shareAbstract,jdbcType=VARCHAR},
+      undercarriage_reason = #{undercarriageReason,jdbcType=LONGVARCHAR}
+    where activity_id = #{activityId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TdActivity">
+    update td_activity
+    set user_id = #{userId,jdbcType=VARCHAR},
+      activity_name = #{activityName,jdbcType=VARCHAR},
+      activitycategory_id = #{activitycategoryId,jdbcType=VARCHAR},
+      activitysign_starttime = #{activitysignStarttime,jdbcType=TIMESTAMP},
+      activitysign_endtime = #{activitysignEndtime,jdbcType=TIMESTAMP},
+      activitystart_time = #{activitystartTime,jdbcType=TIMESTAMP},
+      activityend_time = #{activityendTime,jdbcType=TIMESTAMP},
+      activity_countpersons = #{activityCountpersons,jdbcType=INTEGER},
+      "activity_ chargestatus" = #{activityChargestatus,jdbcType=INTEGER},
+      activity_chargemethod = #{activityChargemethod,jdbcType=INTEGER},
+      activity_type = #{activityType,jdbcType=INTEGER},
+      province_citycode = #{provinceCitycode,jdbcType=VARCHAR},
+      city_citycode = #{cityCitycode,jdbcType=VARCHAR},
+      area_citycode = #{areaCitycode,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      activity_coverImgurl = #{activityCoverimgurl,jdbcType=VARCHAR},
+      activity_isextract = #{activityIsextract,jdbcType=INTEGER},
+      activity_detailsurl = #{activityDetailsurl,jdbcType=VARCHAR},
+      activitymusic_id = #{activitymusicId,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
+      online_status = #{onlineStatus,jdbcType=INTEGER},
+      activity_signupstatus = #{activitySignupstatus,jdbcType=INTEGER},
+      activity_status = #{activityStatus,jdbcType=INTEGER},
+      activity_qrcode = #{activityQrcode,jdbcType=VARCHAR},
+      share_abstract = #{shareAbstract,jdbcType=VARCHAR}
+    where activity_id = #{activityId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getAllTdActivitylistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Base_Column_List"></include>
+		
+		 from td_activity
+	 <where>
+	online_status in(0,1,3) 
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			activity_name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		<if test="pd.userId !=null and pd.userId !=''">
+		and user_id = #{pd.userId}
+		</if>
+	  <if test="pd.start != null and pd.start != ''"><!-- 状态检索 -->
+		 and activitystart_time &gt;= #{pd.start}
+	  </if>
+	  <if test="pd.end != null and pd.end != ''"><!-- 状态检索 -->
+		 and activitystart_time &lt;= #{pd.end}
+	  </if>
+	 <if test="pd.citycode !=null and pd.citycode !=''">
+		and citycode = #{pd.citycode}
+		</if>
+	
+		</where>  
+	    order by updated  desc
+	</select>
+</mapper>

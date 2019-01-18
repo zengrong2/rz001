@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QualifiedMapper">
+	<!-- 字段 -->
+	<sql id="Field">
+		qualified_id,
+		qualified_name,
+		img_url,
+		school_name,
+		school_id,
+		create_time,
+		update_time
+	</sql>
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{qualified_id},
+		#{qualified_name},
+		#{img_url},
+		#{school_name},
+		#{school_id},
+		#{create_time},
+		#{update_time}
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_qualified
+	</sql>
+	<sql id="sTableName">
+		tb_school
+	</sql>
+	<select id="qualifiedlistPage" parameterType="page" resultType="pd">
+		select
+			q.qualified_id,
+		    q.qualified_name,
+		    q.img_url,
+		    s.name,
+		    s.school_id,
+		    q.create_time,
+		    q.update_time
+		from
+		<include refid="tableName"></include> q,<include refid="sTableName"></include> s
+		where q.school_id=s.school_id and q.school_id=#{pd.school_id}
+	    order by create_time  desc
+	</select>
+	
+	<!-- 根据id查询 -->
+	<select id="findQualifiedById" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where qualified_id=#{qualified_id}	
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="saveQ" parameterType="pd">
+		insert into <include refid="tableName"></include> 
+		(qualified_name,img_url,school_name,school_id,create_time,update_time) values 
+		(#{qualified_name},#{img_url},#{school_name},#{school_id},#{create_time},#{update_time})
+	</insert>
+	
+	<!-- 删除 -->
+	<delete id="deleteQ" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			qualified_id = #{qualified_id}
+	</delete>
+	
+	<!-- 更新 -->
+		<update id="editQ" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set 
+				qualified_name =#{qualified_name},
+				img_url        =#{img_url},
+			    update_time    =#{update_time}
+			where 
+				qualified_id   = #{qualified_id}
+	</update>
+	<!-- 通过学校id查询 -->
+	<select id="qualifiedBySId" parameterType="pd" resultType="pd">
+		select
+			q.qualified_id,
+		    q.qualified_name,
+		    q.img_url,
+		    s.name,
+		    s.school_id,
+		    q.create_time,
+		    q.update_time
+		from
+		<include refid="tableName"></include> q,<include refid="sTableName"></include> s
+		where q.school_id=s.school_id and q.school_id=#{school_id}
+	    order by create_time  desc
+	</select>
+	
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OpinionMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_opinion
+	</sql>
+	<sql id="sTableName">
+		tb_student
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		opinion_id,
+		user_id,
+		content,
+		created,
+		updated
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{opinion_id},
+		#{user_id},
+		#{content},
+		#{created},
+		#{updated}
+	</sql>
+	
+	
+	
+	<!-- 问题列表 -->
+	<select id="opinionlistPage" parameterType="page" resultType="pd">
+		select  
+		    o.opinion_id,
+			s.user_id,
+			o.content,
+			o.created,
+			o.updated,
+			s.name,
+			s.phone
+		from <include refid="tableName"></include> o,<include refid="sTableName"></include> s 
+		where o.user_id=s.user_id
+		order by created desc
+	</select>
+	
+	<!-- 根据id查询问题详情 -->
+	<select id="getOpinionById" parameterType="pd" resultType="pd">
+		select  *
+		from <include refid="tableName"></include> 
+		where opinion_id=#{opinion_id}
+	</select>
+
+</mapper>

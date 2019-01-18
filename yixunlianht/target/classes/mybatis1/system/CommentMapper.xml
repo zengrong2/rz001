@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommentMapper">
+	<!-- 字段 -->
+	<sql id="Field">
+		comment_id,
+		school_id,
+		student_id,
+		name,
+		head_portrait,
+		comment_content,
+		score,
+		is_check,
+		created,
+		update_time
+	</sql>
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{comment_id},
+		#{school_id},
+		#{student_id},
+		#{name},
+		#{head_portrait},
+		#{comment_content},
+		#{score},
+		#{is_check},
+		#{created},
+		#{update_time}
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_comment
+	</sql>
+	<sql id="sTableName">
+		tb_school
+	</sql>
+	<sql id="stuTableName">
+		tb_student
+	</sql>
+	<select id="commentlistPage" parameterType="page" resultType="pd">
+		select
+			c.comment_id,
+			s.school_id,
+			c.student_id,
+			s.name,
+			c.head_portrait,
+			c.comment_content,
+			c.score,
+			c.is_check,
+			c.created,
+			c.updated,
+			stu.name  as uname,
+			stu.phone
+		from
+		<include refid="tableName"></include> c,<include refid="sTableName"></include> s,<include refid="stuTableName"></include> stu
+		where c.school_id=s.school_id and c.student_id=stu.user_id
+		 <if test="pd.school_id!= null and pd.school_id != ''">
+			and c.school_id=#{pd.school_id}	and c.is_check=2
+	    </if>
+	    <if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			s.name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+	    order by created  desc
+	</select>
+	
+	<!-- 根据id查询 -->
+	<select id="findCommentById" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where comment_id=#{comment_id}	
+	</select>
+	
+	<!-- 更新 -->
+		<update id="editC" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set 
+				is_check =#{is_check},
+			    update_time        =#{update_time}
+			where 
+				comment_id   = #{comment_id}
+	</update>
+	
+	
+</mapper>

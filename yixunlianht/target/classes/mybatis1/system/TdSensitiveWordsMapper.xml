@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdSensitiveWordsMapper">
+  <resultMap id="BaseResultMap" type="TdSensitiveWords">
+    <id column="sensitive_words_id" jdbcType="VARCHAR" property="sensitiveWordsId" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="TdSensitiveWords">
+    <result column="sensitive_words_context" jdbcType="LONGVARCHAR" property="sensitiveWordsContext" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sensitive_words_id, created, updated,sensitive_words_context,remark
+  </sql>
+  <sql id="Blob_Column_List">
+    sensitive_words_context
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="TdSensitiveWordsExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from td_sensitive_words
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="TdSensitiveWordsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from td_sensitive_words
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from td_sensitive_words
+    where sensitive_words_id = #{sensitiveWordsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from td_sensitive_words
+    where sensitive_words_id = #{sensitiveWordsId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="TdSensitiveWordsExample">
+    delete from td_sensitive_words
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TdSensitiveWords">
+    insert into td_sensitive_words (sensitive_words_id, created, updated, 
+      sensitive_words_context)
+    values (#{sensitiveWordsId,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, 
+      #{sensitiveWordsContext,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="TdSensitiveWords">
+    insert into td_sensitive_words
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sensitiveWordsId != null">
+        sensitive_words_id,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="sensitiveWordsContext != null">
+        sensitive_words_context,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sensitiveWordsId != null">
+        #{sensitiveWordsId,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sensitiveWordsContext != null">
+        #{sensitiveWordsContext,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TdSensitiveWordsExample" resultType="java.lang.Long">
+    select count(*) from td_sensitive_words
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update td_sensitive_words
+    <set>
+      <if test="record.sensitiveWordsId != null">
+        sensitive_words_id = #{record.sensitiveWordsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sensitiveWordsContext != null">
+        sensitive_words_context = #{record.sensitiveWordsContext,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update td_sensitive_words
+    set sensitive_words_id = #{record.sensitiveWordsId,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP},
+      sensitive_words_context = #{record.sensitiveWordsContext,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update td_sensitive_words
+    set sensitive_words_id = #{record.sensitiveWordsId,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TdSensitiveWords">
+    update td_sensitive_words
+    <set>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sensitiveWordsContext != null">
+        sensitive_words_context = #{sensitiveWordsContext,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where sensitive_words_id = #{sensitiveWordsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="TdSensitiveWords">
+    update td_sensitive_words
+    set created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
+      sensitive_words_context = #{sensitiveWordsContext,jdbcType=LONGVARCHAR}
+    where sensitive_words_id = #{sensitiveWordsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TdSensitiveWords">
+    update td_sensitive_words
+    set created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where sensitive_words_id = #{sensitiveWordsId,jdbcType=VARCHAR}
+  </update>
+  <select id="getAllTdSensitiveWordslistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Base_Column_List"></include>
+		
+		 from td_sensitive_words
+	 
+	    order by updated  desc
+	</select>
+</mapper>

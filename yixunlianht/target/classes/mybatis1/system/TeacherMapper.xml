@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TeacherMapper">
+  <resultMap type="Teacher" id="teacherResultMap">
+		<id column="tid" property="tid"/>
+		<result column="name" property="name" />
+		<result column="phone" property="phone" />
+		<result column="head_portrait" property="headPortrait" />
+		<result column="type" property="type" />
+		<result column="commission" property="commission" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="remark" property="remark"/>
+         <result column="ywyid" property="ywyid"/>
+         <result column="address" property="address"/>
+         <result column="ywyphone" property="ywyphone"/>
+         <result column="workunit" property="workunit"/>
+         <result column="num" property="num"/>
+         <result column="integral" property="integral"/>
+	</resultMap>
+	
+	<!-- ztree -->
+	<resultMap type="Teacher" id="teacherZtreeResultMap">
+	   <id column="tid" property="tid"/>
+		<result column="name" property="name" />
+		<result column="phone" property="phone" />
+		<result column="head_portrait" property="headPortrait" />
+		<result column="type" property="type" />
+		<result column="pid" property="pid" />
+		<result column="commission" property="commission" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	     <result column="target" property="target"></result>
+	     <result column="URL" property="URL"/>
+         
+	</resultMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		tb_teacher
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		tid,
+ 	    name,
+ 		phone,
+ 		head_portrait,
+ 		type,
+ 		commission,
+ 		pid,
+ 	    create_time,
+ 	    update_time,
+ 	    password,
+ 	    remark,
+        ywyid,
+        address,
+        ywyphone,
+        workunit,
+        num,
+        integral
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+	    #{tid},
+ 	    #{name},
+ 		#{phone},
+ 		#{head_portrait},
+ 		#{type},
+ 		#{commission},
+ 		#{pid},
+ 	    #{create_time},
+ 	    #{update_time},
+ 	    #{password},
+ 	    #{remark},
+        #{ywyid},
+        #{address},
+        #{ywyphone},
+        #{workunit},
+        #{num}
+        #{integral}
+	</sql>
+	
+	<!--通过ID获取其子一级菜单 -->
+	<select id="listSubTeacherBypId" parameterType="pd" resultMap="teacherResultMap">
+		select  
+			<include refid="Field"></include>
+		from 
+			<include refid="tableName"></include>
+		where pid = #{pid} 
+		<if test="keywords!= null and keywords != ''"><!-- 关键词检索 -->
+			and
+			(name LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+			or
+		    phone LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+		    )
+		</if>
+		<if test="ywyphone !=null and ywyphone != ''"><!-- 关键词检索 -->
+			and
+             ywyphone =#{ywyphone}
+		</if>
+		<if test="ywyid !=null and ywyid != ''"><!-- 关键词检索 -->
+			and
+             ywyid =#{ywyid}
+		</if>
+	</select>
+	
+	<!--通过菜单ID获取数据 -->
+	<select id="getTeacherById" parameterType="pd" resultType="pd">
+		select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where tid=#{tid}
+	</select>
+	
+<!-- 新增 -->
+	<insert id="saveT" parameterType="pd">
+		insert into <include refid="tableName"></include> 
+		(name,phone,head_portrait,type,commission,pid,create_time,update_time,password,ywyid,address,ywyphone,remark) values 
+		(#{name},#{phone},#{head_portrait},#{type},#{commission},#{pid},#{create_time},#{update_time},#{password},#{ywyid},#{address},#{ywyphone},#{remark})
+	</insert>
+	<!-- 2018/8/8 -->
+	<update id="addIntegralTeacher" parameterType="pd">
+	update  <include refid="tableName"></include> 
+	set integral = #{integrals} where tid=#{teaId}
+	
+	</update>
+	
+	<!--编辑 -->
+	<update id="updateTeacher" parameterType="pd">
+		update 
+		<include refid="tableName"></include> 
+		set 
+		    phone      =#{phone},
+		    name       =#{name},
+			commission =#{commission},
+			address    =#{address},
+			workunit   =#{workunit},
+			remark     =#{remark},
+			update_time =#{update_time}
+		where 
+			tid=#{tid}
+	</update>
+	<!-- 查询所有的招生老师 -->
+	<select id="listAllTeacher"  resultMap="teacherResultMap">
+	    select  
+		     <include refid="Field"></include>
+		from 
+		    <include refid="tableName"></include>
+		    
+	</select>
+	<!-- 2018./8/8 -->
+
+   <select id="findSecondTeaByFirstTeaTid"  parameterType="pd" resultType="pd">
+	    select  
+		     <include refid="Field"></include>
+		from 
+		    <include refid="tableName"></include>
+		     where pid=${0}
+	</select>
+	
+	  <select id="listTeacherBypIds"  parameterType="pd" resultType="pd">
+	    select  
+		     <include refid="Field"></include>
+		from 
+		    <include refid="tableName"></include>
+		     where pid=#{tid}
+	</select>
+	<!--通过菜单ID获取数据 -->
+	<select id="findTeacherById" parameterType="Long" resultMap="teacherResultMap">
+		select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where tid=#{tid}
+	</select>
+	
+	<select id="findTeacherById2" parameterType="Long" resultType="Teacher">
+		select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where tid=#{tid}
+	</select>
+	
+	<!-- 2018/8/4 -->
+	<select id="listFirstFindTeacherBypId" parameterType="Long" resultMap="teacherResultMap">
+	select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where pid = #{pid}
+	</select>
+	<!-- 2018/8/4 -->
+	<select id="firstFindSecondListByTid" parameterType="Long" resultMap="teacherResultMap">
+	select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where pid = #{tid}
+	</select>
+	<!--通过手机号获取数据 -->
+	<select id="findTeacherByPhone" parameterType="String" resultMap="teacherResultMap">
+		select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where phone=#{phone}
+	</select>
+	
+	<delete id="deleteTeacherById" parameterType="Long">
+	  delete from <include refid="tableName"></include>
+		where 
+			tid = #{tid}
+	</delete>
+	<!-- 2018/8/4 -->
+	<!--通过父id查询老师-->
+	<select id="listTeacherBypId" parameterType="Long" resultMap="teacherResultMap">
+		select  
+			<include refid="Field"></include>
+		from 
+			<include refid="tableName"></include>
+		where pid = #{tids} 
+	</select>
+	
+	<!-- 更新pid -->
+	<update id="updatePid" parameterType="pd">
+		update 
+		<include refid="tableName"></include> 
+		set 
+		    pid = #{pid}
+		where 
+			tid=#{tid}
+	</update>
+	
+	<!-- 通过业务员id查询所有的招生老师 -->
+	<select id="listTeacherByYid" parameterType="String" resultMap="teacherResultMap">
+	    select  
+		     <include refid="Field"></include>
+		from 
+		    <include refid="tableName"></include>
+		    where  ywyid =#{ywyid}
+	</select>
+	
+	<!-- 更新业务员电话及id -->
+	<update id="editYid" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set 
+			ywyid =#{ywyid},
+			ywyphone     =#{ywyphone}
+			where 
+			tid = #{tid}
+	</update>
+</mapper>

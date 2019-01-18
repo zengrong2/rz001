@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdBackgroundTransferRecordinputMapper">
+ <!--  <resultMap id="TdMemberUpdateExtract" type="MemberUpdateExtract">
+    <result column="memberupdateextract_id" jdbcType="VARCHAR" property="memberupdateextractId" />
+    <result column="member_update_extract_type" jdbcType="INTEGER" property="memberUpdateExtractType" />
+      <result column="member_update_role" jdbcType="INTEGER" property="memberUpdateRole" />
+    <result column="member_update_money" jdbcType="DECIMAL" property="memberUpdateMoney" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap> -->
+ 
+	<!-- 字段 -->
+	<sql id="Field">
+
+    background_transfer_record_id, background_transfer_record_money,user_id,activity_id ,created, updated,remark,
+    transfer_type,transfer_single_number,transf_time,payment_method,payment_status
+  
+	</sql>
+	
+ 	<!-- 字段值 -->
+	<!-- <sql id="FieldValue">
+		#{pId},
+		#{pName},
+		#{pSalary},
+		#{companyId},
+		#{pAddress},
+		#{pJuli},
+		#{pContent},
+		#{pRequirement},
+		#{updated},
+		#{created},
+		#{is_state},
+		#{remark},
+		#{work}
+		
+	</sql> --> 
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_background_transfer_recordinput
+	</sql>
+	
+	<select id="getAllTdBackgroundTransferRecordinputlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+		<if test="pd.userId !=null and pd.userId!=''">
+		and user_id = ${pd.userId}
+		</if>
+		</where>
+	    order by updated  desc
+	</select>
+	
+	<select id="financialBackgroundInputStatistics" parameterType="page" resultType="pd">
+	
+		select
+		DATE_FORMAT(transf_time,'%m') months,sum(background_transfer_record_money) money
+		from
+		<include refid="tableName"></include>
+		where
+    	<!--  transf_time BETWEEN  ${pd.startYear} and ${pd.endYear} -->
+    	transf_time BETWEEN  '${pd.startYear}' and  '${pd.endYear}'
+		
+	
+	    group by months
+	</select>
+	
+</mapper>

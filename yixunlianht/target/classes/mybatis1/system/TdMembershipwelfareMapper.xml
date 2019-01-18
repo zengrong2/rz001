@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdMembershipwelfareMapper">
+  <resultMap id="BaseResultMap" type="TdMembershipwelfare">
+    <id column="welfare_id" jdbcType="VARCHAR" property="welfareId" />
+    <result column="welfare_imgurl" jdbcType="VARCHAR" property="welfareImgurl" />
+    <result column="welfare_sharecount" jdbcType="INTEGER" property="welfareSharecount" />
+    <result column="welfare_title" jdbcType="VARCHAR" property="welfareTitle" />
+    <result column="welfare_context" jdbcType="VARCHAR" property="welfareContext" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="welfare_condition" jdbcType="INTEGER" property="welfareCondition" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    welfare_id, welfare_imgurl, welfare_sharecount, welfare_title, welfare_context, created, 
+    updated, welfare_condition
+  </sql>
+  <select id="selectByExample" parameterType="TdMembershipwelfareExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from td_membershipwelfare
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from td_membershipwelfare
+    where welfare_id = #{welfareId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from td_membershipwelfare
+    where welfare_id = #{welfareId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="TdMembershipwelfareExample">
+    delete from td_membershipwelfare
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TdMembershipwelfare">
+    insert into td_membershipwelfare (welfare_id, welfare_imgurl, welfare_sharecount, 
+      welfare_title, welfare_context, created, 
+      updated, welfare_condition)
+    values (#{welfareId,jdbcType=VARCHAR}, #{welfareImgurl,jdbcType=VARCHAR}, #{welfareSharecount,jdbcType=INTEGER}, 
+      #{welfareTitle,jdbcType=VARCHAR}, #{welfareContext,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP}, #{welfareCondition,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="TdMembershipwelfare">
+    insert into td_membershipwelfare
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="welfareId != null">
+        welfare_id,
+      </if>
+      <if test="welfareImgurl != null">
+        welfare_imgurl,
+      </if>
+      <if test="welfareSharecount != null">
+        welfare_sharecount,
+      </if>
+      <if test="welfareTitle != null">
+        welfare_title,
+      </if>
+      <if test="welfareContext != null">
+        welfare_context,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+      <if test="welfareCondition != null">
+        welfare_condition,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="welfareId != null">
+        #{welfareId,jdbcType=VARCHAR},
+      </if>
+      <if test="welfareImgurl != null">
+        #{welfareImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="welfareSharecount != null">
+        #{welfareSharecount,jdbcType=INTEGER},
+      </if>
+      <if test="welfareTitle != null">
+        #{welfareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="welfareContext != null">
+        #{welfareContext,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="welfareCondition != null">
+        #{welfareCondition,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TdMembershipwelfareExample" resultType="java.lang.Long">
+    select count(*) from td_membershipwelfare
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update td_membershipwelfare
+    <set>
+      <if test="record.welfareId != null">
+        welfare_id = #{record.welfareId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.welfareImgurl != null">
+        welfare_imgurl = #{record.welfareImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.welfareSharecount != null">
+        welfare_sharecount = #{record.welfareSharecount,jdbcType=INTEGER},
+      </if>
+      <if test="record.welfareTitle != null">
+        welfare_title = #{record.welfareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.welfareContext != null">
+        welfare_context = #{record.welfareContext,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.welfareCondition != null">
+        welfare_condition = #{record.welfareCondition,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update td_membershipwelfare
+    set welfare_id = #{record.welfareId,jdbcType=VARCHAR},
+      welfare_imgurl = #{record.welfareImgurl,jdbcType=VARCHAR},
+      welfare_sharecount = #{record.welfareSharecount,jdbcType=INTEGER},
+      welfare_title = #{record.welfareTitle,jdbcType=VARCHAR},
+      welfare_context = #{record.welfareContext,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP},
+      welfare_condition = #{record.welfareCondition,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TdMembershipwelfare">
+    update td_membershipwelfare
+    <set>
+      <if test="welfareImgurl != null">
+        welfare_imgurl = #{welfareImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="welfareSharecount != null">
+        welfare_sharecount = #{welfareSharecount,jdbcType=INTEGER},
+      </if>
+      <if test="welfareTitle != null">
+        welfare_title = #{welfareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="welfareContext != null">
+        welfare_context = #{welfareContext,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="welfareCondition != null">
+        welfare_condition = #{welfareCondition,jdbcType=INTEGER},
+      </if>
+    </set>
+    where welfare_id = #{welfareId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TdMembershipwelfare">
+    update td_membershipwelfare
+    set welfare_imgurl = #{welfareImgurl,jdbcType=VARCHAR},
+      welfare_sharecount = #{welfareSharecount,jdbcType=INTEGER},
+      welfare_title = #{welfareTitle,jdbcType=VARCHAR},
+      welfare_context = #{welfareContext,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP},
+      welfare_condition = #{welfareCondition,jdbcType=INTEGER}
+    where welfare_id = #{welfareId,jdbcType=VARCHAR}
+  </update>
+   <select id="getAllTdMembershipwelfarelistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Base_Column_List"></include>
+		
+		 from td_membershipwelfare
+	 <where>
+	
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			welfare_title LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		
+	
+		</where>  
+	    order by updated  desc
+	</select>
+</mapper>

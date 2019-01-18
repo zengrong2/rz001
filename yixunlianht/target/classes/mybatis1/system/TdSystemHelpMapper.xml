@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TdSystemHelpMapper">
+  <resultMap id="BaseResultMap" type="TdSystemHelp">
+    <id column="system_help_id" jdbcType="VARCHAR" property="systemHelpId" />
+    <result column="system_help_type" jdbcType="VARCHAR" property="systemHelpType" />
+    <result column="system_help_context" jdbcType="VARCHAR" property="systemHelpContext" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    system_help_id, system_help_type, system_help_context, created, updated
+  </sql>
+  <select id="selectByExample" parameterType="TdSystemHelpExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from td_system_help
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from td_system_help
+    where system_help_id = #{systemHelpId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from td_system_help
+    where system_help_id = #{systemHelpId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="TdSystemHelpExample">
+    delete from td_system_help
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="TdSystemHelp">
+    insert into td_system_help (system_help_id, system_help_type, system_help_context, 
+      created, updated)
+    values (#{systemHelpId,jdbcType=VARCHAR}, #{systemHelpType,jdbcType=VARCHAR}, #{systemHelpContext,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="TdSystemHelp">
+    insert into td_system_help
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="systemHelpId != null">
+        system_help_id,
+      </if>
+      <if test="systemHelpType != null">
+        system_help_type,
+      </if>
+      <if test="systemHelpContext != null">
+        system_help_context,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="systemHelpId != null">
+        #{systemHelpId,jdbcType=VARCHAR},
+      </if>
+      <if test="systemHelpType != null">
+        #{systemHelpType,jdbcType=VARCHAR},
+      </if>
+      <if test="systemHelpContext != null">
+        #{systemHelpContext,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="TdSystemHelpExample" resultType="java.lang.Long">
+    select count(*) from td_system_help
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update td_system_help
+    <set>
+      <if test="record.systemHelpId != null">
+        system_help_id = #{record.systemHelpId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.systemHelpType != null">
+        system_help_type = #{record.systemHelpType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.systemHelpContext != null">
+        system_help_context = #{record.systemHelpContext,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update td_system_help
+    set system_help_id = #{record.systemHelpId,jdbcType=VARCHAR},
+      system_help_type = #{record.systemHelpType,jdbcType=VARCHAR},
+      system_help_context = #{record.systemHelpContext,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="TdSystemHelp">
+    update td_system_help
+    <set>
+      <if test="systemHelpType != null">
+        system_help_type = #{systemHelpType,jdbcType=VARCHAR},
+      </if>
+      <if test="systemHelpContext != null">
+        system_help_context = #{systemHelpContext,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where system_help_id = #{systemHelpId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TdSystemHelp">
+    update td_system_help
+    set system_help_type = #{systemHelpType,jdbcType=VARCHAR},
+      system_help_context = #{systemHelpContext,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where system_help_id = #{systemHelpId,jdbcType=VARCHAR}
+  </update>
+  <select id="getAllTdSystemHelplistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Base_Column_List"></include>
+		
+		 from td_system_help
+	 <where>
+	
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			system_help_type LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		
+	
+		</where>  
+	    order by updated  desc
+	</select>
+</mapper>

@@ -1,0 +1,6 @@
+<config>
+	<!-- 配置成自己申请的微信应用的参数 -->
+	<appKey>wx3233f1e6fac2d6a4</appKey><!--mch_appid-->
+	<mchid>1398342902</mchid>  <!--商户号  mchid-->
+	<cert_path>C:\\X6\\apiclient_cert.p12</cert_path><!--注意路径的写法，路径里需要包含文件的名字-->
+</config>

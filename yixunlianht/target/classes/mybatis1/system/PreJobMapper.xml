@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PreJobMapper">
+
+	<!-- 字段 -->
+	<sql id="Field">
+		w_id,
+		w_name,
+		w_image,
+	    updated,
+	    created,
+	    remark
+	   
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{wId},
+		#{wName},
+		#{wImage},
+		#{updated},
+		#{created},
+		#{remark}
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_prejob
+	</sql>
+	
+	<select id="preJobTypelistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			w_name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		</where>
+	    order by updated  desc
+	</select>
+	
+	<select id="ListPreJobType"  resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		
+	    order by updated  desc
+	</select>
+	<!-- 删除岗前培训类型 -->
+	<delete id="delPreJobTypeBylid" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			w_id = #{w_id}
+	</delete>
+	<select id="getPreJobTypeTypeById" parameterType="pd" resultType="pd">
+	  select
+		<include refid="Field"></include>
+	  from
+		<include refid="tableName"></include>
+	 where w_id=#{w_id}	
+	</select>
+	<update id="editPreJobTypeType" parameterType="pd" >
+		update  <include refid="tableName"></include>
+			set w_name          =#{w_name},
+			    w_image         =#{w_image},
+			   
+			    updated         =#{update_time},
+			    remark = #{remark}
+			where 
+				w_id = #{w_id}
+	</update>
+	<!-- 新增 -->
+	<insert id="savePreJobTypeInfo" parameterType="pd">
+		insert into <include refid="tableName"></include> (
+		w_name,w_image,created,updated
+		) values (
+		#{w_name},#{w_image},#{created},#{updated}
+		)
+	</insert>
+
+<!-- 批量删除deleteAllProJobType -->
+	<delete id="deleteAllProJobType" parameterType="String" >
+		delete from <include refid="tableName"></include>
+		where 
+			w_id in
+  			 <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                  #{item}
+             </foreach>
+            and 
+				w_id != '1'
+	</delete>
+</mapper>

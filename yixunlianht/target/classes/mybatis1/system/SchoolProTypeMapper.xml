@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SchoolProTypeMapper">
+
+	<!-- 字段 -->
+	<sql id="Field">
+		c_id,
+		es_id,
+		c_name,
+		c_major,
+		c_tuition,
+		
+	    updated,
+	    created,
+	    remark
+	 
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{cId},
+		#{esId},
+		#{cName},
+		#{cMajor},
+		#{c_tuition},
+		
+		#{updated},
+		#{created},
+		#{remark}
+		
+	</sql>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		td_category
+	</sql>
+	
+	<select id="SchoolProTypelistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		<where>
+		
+		and es_id = #{pd.school_id}
+		
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			c_name LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		
+		</where> 
+	    order by updated  desc
+	</select>
+	
+	<select id="findAllSchoolProType" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where 
+		es_id = #{school_id} 
+	    order by updated  desc
+	</select>
+	
+	
+	<delete id="deleteSchoolProTypeByCid" parameterType="pd" flushCache="false">
+		delete from <include refid="tableName"></include>
+		where 
+			c_id = #{c_id}
+	</delete>
+	<select id="getSchoolProTypeById" parameterType="pd" resultType="pd">
+        select  
+			<include refid="Field"></include>
+		 from 
+			<include refid="tableName"></include>
+		 where c_id=#{c_id} 
+	
+	</select>
+	<update id="editSchoolProType" parameterType="pd">
+		update 
+		<include refid="tableName"></include> 
+		set 
+		   
+		    c_name       =#{c_name},
+			c_major =#{c_major},
+			c_tuition    =#{c_tuition},
+			updated   =#{update_time},
+			remark = #{remark}			
+		where 
+			c_id=#{c_id}
+	</update>
+	<insert id="saveSchoolProTypeInfo" parameterType="pd">
+		insert into <include refid="tableName"></include> 
+		(es_id,c_name,c_major,c_tuition,created,updated) values 
+		(#{school_id},#{c_name},#{c_major},#{c_tuition},#{created},#{updated})
+	</insert>
+	<!-- 批量删除deleteAllSchoolProType -->
+	<delete id="deleteAllSchoolProType" parameterType="String" >
+		delete from <include refid="tableName"></include>
+		where 
+			c_id in
+  			 <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                  #{item}
+             </foreach>
+            and 
+				c_id != '1' 
+	</delete>
+</mapper>
